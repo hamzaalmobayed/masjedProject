@@ -29,6 +29,13 @@ class _MohafethAddingState extends State<MohafethAdding> {
   bool enable=true;
 
   bool read=false;
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 2),(){
+      Provider.of<ProviderMasjed>(context,listen: false).getStatus();
+      Provider.of<ProviderMasjed>(context,listen: false).getCourse();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,9 +106,61 @@ class _MohafethAddingState extends State<MohafethAdding> {
                     TextFieldAdding("تاريخ الميلاد", ProviderMasjed.mohafethBirthdayCon),
                     TextFieldAdding("التخصص الاكاديمي", ProviderMasjed.mohafethFeildCon),
                     TextFieldAdding("رقم الجوال", ProviderMasjed.mohafethMobileCon),
-                    DropDownButtonAdding(ProviderMasjed.mohafethStatus, ProviderMasjed.mohafethStatusList),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15.0),
+                      child: DropdownButton<String>(
+                        value:ProviderMasjed.selectedStatus,
+                        icon: Icon(Icons.keyboard_arrow_down_sharp),
+
+                        iconSize: 30,
+                        elevation: 16,
+                        isExpanded: true,
+                        style: TextStyle(color: Colors.grey, fontSize: 17.0,fontFamily:"Cairo",),
+                        underline: Container(
+                          height: 2,
+                          color: mainColor,
+                        ),
+                        onChanged: (newValue) {
+                          ProviderMasjed.selectStatus(newValue);
+
+                        },
+                        items:
+                        ProviderMasjed.StatusList.map((value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
                     TextFieldAdding("كلمة المرور", ProviderMasjed.PasswordCon),
-                    DropDownButtonAdding(ProviderMasjed.mohafethCourse,ProviderMasjed.mohafethCourseList),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15.0),
+                      child: DropdownButton<String>(
+                        value:ProviderMasjed.selectedCourse,
+                        icon: Icon(Icons.keyboard_arrow_down_sharp),
+
+                        iconSize: 30,
+                        elevation: 16,
+                        isExpanded: true,
+                        style: TextStyle(color: Colors.grey, fontSize: 17.0,fontFamily:"Cairo",),
+                        underline: Container(
+                          height: 2,
+                          color: mainColor,
+                        ),
+                        onChanged: (newValue) {
+                          ProviderMasjed.selectCourse(newValue);
+
+                        },
+                        items:
+                        ProviderMasjed.CourseList.map((value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
                   ],
                 ),
               ),

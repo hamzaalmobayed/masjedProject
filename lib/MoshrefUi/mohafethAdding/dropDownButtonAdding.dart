@@ -3,16 +3,16 @@ import 'package:masjed/main.dart';
 import 'package:masjed/provider.dart';
 import 'package:provider/provider.dart';
 class DropDownButtonAdding extends StatefulWidget {
-String value;
+dynamic value;
 List<dynamic> item;
 
 DropDownButtonAdding(this.value, this.item);
-
   @override
   _DropDownButtonAddingState createState() => _DropDownButtonAddingState();
 }
 
 class _DropDownButtonAddingState extends State<DropDownButtonAdding> {
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ProviderMasjed>(
@@ -35,7 +35,7 @@ class _DropDownButtonAddingState extends State<DropDownButtonAdding> {
 
           },
           items:
-          widget.item.map<DropdownMenuItem<dynamic>>((value) {
+          widget.item.map((value) {
             return DropdownMenuItem<dynamic>(
               value: value,
               child: Text(value),

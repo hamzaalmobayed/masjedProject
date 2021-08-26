@@ -7,6 +7,7 @@ import 'package:masjed/main.dart';
 import 'package:masjed/MoshrefUi/mohafethAdding/dropDownButtonAdding.dart';
 import 'package:masjed/MoshrefUi/mohafethAdding/textFieldAdding.dart';
 import 'package:masjed/MoshrefUi/moshref/Moshref.dart';
+import 'package:masjed/model/ChainModel.dart';
 import 'package:masjed/model/StudentModel.dart';
 import 'package:masjed/nameData.dart';
 import 'package:masjed/MoshrefUi/studentSuccessAdding/StudentSuccessAdding.dart';
@@ -29,6 +30,14 @@ class _StudentAddingState extends State<StudentAdding> {
 
   bool read=false;
   TextEditingController con1=TextEditingController();
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 2),(){
+      Provider.of<ProviderMasjed>(context,listen: false).getStatus();
+      Provider.of<ProviderMasjed>(context,listen: false).getCourse();
+      Provider.of<ProviderMasjed>(context,listen: false).getChainFromFirestore();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,12 +110,90 @@ class _StudentAddingState extends State<StudentAdding> {
                     TextFieldAdding("رقم هوية الاب", ProviderMasjed.studentFatherCardCon),
                     TextFieldAdding("رقم الجوال", ProviderMasjed.studentMobileCon),
                     TextFieldAdding("الصف المدرسي", ProviderMasjed.studentClassCon),
-                    DropDownButtonAdding("اسم الحلقة", ["اسم الحلقة"]),
-                    DropDownButtonAdding(ProviderMasjed.studentStatus, ProviderMasjed.mohafethStatusList),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15.0),
+                      child: DropdownButton<Chain_model>(
+                        value:ProviderMasjed.selectedChain,
+                        icon: Icon(Icons.keyboard_arrow_down_sharp),
+
+                        iconSize: 30,
+                        elevation: 16,
+                        isExpanded: true,
+                        style: TextStyle(color: Colors.grey, fontSize: 17.0,fontFamily:"Cairo",),
+                        underline: Container(
+                          height: 2,
+                          color: mainColor,
+                        ),
+                        onChanged: (newValue) {
+                          ProviderMasjed.selectChain(newValue);
+
+                        },
+                        items:
+                        ProviderMasjed.chains.map((value) {
+                          return DropdownMenuItem<Chain_model>(
+                            value: value,
+                            child: Text(value.chainName),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15.0),
+                      child: DropdownButton<String>(
+                        value:ProviderMasjed.selectedStatus,
+                        icon: Icon(Icons.keyboard_arrow_down_sharp),
+
+                        iconSize: 30,
+                        elevation: 16,
+                        isExpanded: true,
+                        style: TextStyle(color: Colors.grey, fontSize: 17.0,fontFamily:"Cairo",),
+                        underline: Container(
+                          height: 2,
+                          color: mainColor,
+                        ),
+                        onChanged: (newValue) {
+                          ProviderMasjed.selectStatus(newValue);
+
+                        },
+                        items:
+                        ProviderMasjed.StatusList.map((value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
                     TextFieldAdding("كلمة المرور", ProviderMasjed.PasswordCon),
                     TextFieldAdding("عمل الاب", ProviderMasjed.studentFatherWorkCon),
                     TextFieldAdding("عنوان السكن", ProviderMasjed.studentAddressCon),
-                    DropDownButtonAdding(ProviderMasjed.studentCourse, ProviderMasjed.mohafethCourseList),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15.0),
+                      child: DropdownButton<String>(
+                        value:ProviderMasjed.selectedCourse,
+                        icon: Icon(Icons.keyboard_arrow_down_sharp),
+
+                        iconSize: 30,
+                        elevation: 16,
+                        isExpanded: true,
+                        style: TextStyle(color: Colors.grey, fontSize: 17.0,fontFamily:"Cairo",),
+                        underline: Container(
+                          height: 2,
+                          color: mainColor,
+                        ),
+                        onChanged: (newValue) {
+                          ProviderMasjed.selectCourse(newValue);
+
+                        },
+                        items:
+                        ProviderMasjed.CourseList.map((value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
                   ],
                 ),
               ),

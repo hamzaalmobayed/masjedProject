@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'dart:typed_data';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:masjed/firebase/storage.dart';
+import 'package:masjed/model/ExamModel.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -21,6 +22,14 @@ import 'model/ChainModel.dart';
 import 'model/MohafethModel.dart';
 import 'model/StudentModel.dart';
 class ProviderMasjed extends ChangeNotifier{
+  ProviderMasjed() {
+    getMohafethFromFirestore();
+    getChainFromFirestore();
+    getStudentFromFirestore();
+    getAge();
+    getStatus();
+    getCourse();
+  }
   TextEditingController conName=TextEditingController();
   TextEditingController conBeginAya=TextEditingController();
   TextEditingController conBeginSora=TextEditingController();
@@ -47,32 +56,125 @@ class ProviderMasjed extends ChangeNotifier{
   TextEditingController searchingCon=TextEditingController();
   TextEditingController chainNumberCon=TextEditingController();
   TextEditingController chainNameCon=TextEditingController();
+
+  TextEditingController conExamChain=TextEditingController();
+  TextEditingController conExamName=TextEditingController();
+  TextEditingController conExamMark=TextEditingController();
+  TextEditingController conExamEstimation=TextEditingController();
+  TextEditingController conExamDate=TextEditingController();
+  TextEditingController conExamPerson=TextEditingController();
   Mohafeth_model mohafeth;
   Student_model student;
-  List<String> mohafethStatusList=["حالة الاسرة","فقيرة","متوسطة","غنية"];
-  String mohafethStatus="حالة الاسرة";
-  String studentStatus="حالة الاسرة";
-  List<String> mohafethCourseList=["دورات الاحكام","تمهيدية","تاهيلية","عليا","تاهيل سند","سند متصل"];
-  String mohafethCourse="دورات الاحكام";
-  String studentCourse="دورات الاحكام";
+  List<String> StatusList;
+  String selectedStatus;
+  List<String> CourseList;
+  String selectedCourse;
+
   int count=0;
   String valueStudent;
-  List<Mohafeth_model> mohafeths;
-  Mohafeth_model selectedMohafeth;
+
   final GlobalKey<State<StatefulWidget>> printKey = GlobalKey();
 
-  change(){
+  List<Mohafeth_model> mohafeths;
+  List<Mohafeth_model> helperMohafeths;
+  Mohafeth_model selectedMohafeth;
+  selectMohafeth(Mohafeth_model mohafethModel) {
+    this.selectedMohafeth = mohafethModel;
     notifyListeners();
   }
-  selectMohafeth( Mohafeth_model mohafeth){
-    this.selectedMohafeth=mohafeth;
+  Student_model selectedChainStudent;
+  selectChainStudent(Student_model student) {
+    this.selectedChainStudent = student;
     notifyListeners();
   }
-  getAllMohafeth()async{
-    List<Mohafeth_model> mohafeth=await FireStore_Helper.FireStoreHelper.getAllMohafethFromFirestore();
-    this.mohafeths=mohafeth;
-    selectMohafeth(mohafeth.first);
+  List<Chain_model> chains;
+  List<Student_model> chainStudent ;
+  Chain_model selectedChain;
+  selectChain(Chain_model chainModel) async {
+    this.selectedChain = chainModel;
+    List<Student_model> chainStudent =
+        await FireStore_Helper.FireStoreHelper.getAllSpecifyStudentFromFirestore(selectedChain.chainName);
     notifyListeners();
+    this.chainStudent=chainStudent;
+    selectChainStudent(chainStudent.first);
+    notifyListeners();
+  }
+  Mohafeth_model selectedHelperMohafeth;
+  selectHelperMohafeth(Mohafeth_model mohafethModel) {
+    this.selectedHelperMohafeth = mohafethModel;
+    notifyListeners();
+  }
+
+  List<String> age;
+  String selectedAge;
+  selectAge(String age) {
+    this.selectedAge = age;
+    notifyListeners();
+  }
+  getAge() async {
+    List<String> age =['الفئة العمرية','الابتدائي','الاعدادي','الثانوي','الجامعي'];
+    this.age = age;
+    age.forEach((element) {
+      print(age);
+    });
+    selectAge(age.first);
+    notifyListeners();
+
+  }
+
+  selectStatus(String status) {
+    this.selectedStatus = status;
+    notifyListeners();
+  }
+  getStatus() async {
+    List<String> StatusList=["حالة الاسرة","فقيرة","متوسطة","غنية"];
+    this.StatusList = StatusList;
+    selectStatus(StatusList.first);
+    notifyListeners();
+
+  }
+  selectCourse(String Course) {
+    this.selectedCourse = Course;
+    notifyListeners();
+  }
+  getCourse() async {
+    List<String> CourseList=["دورات الاحكام","تمهيدية","تاهيلية","عليا","تاهيل سند","سند متصل"];
+    this.CourseList = CourseList;
+    selectCourse(CourseList.first);
+    notifyListeners();
+
+  }
+  getChainFromFirestore() async {
+    List<Chain_model> chains =
+    await FireStore_Helper.FireStoreHelper.getAllChainFromFirestore();
+    this.chains = chains;
+    selectChain(chains.first);
+    notifyListeners();
+
+  }
+  List<Student_model> students;
+  getStudentFromFirestore() async {
+    List<Student_model> students =
+    await FireStore_Helper.FireStoreHelper.getAllStudentFromFirestore();
+    this.students = students;
+    notifyListeners();
+
+  }
+  getHelperMohafethFromFirestore() async {
+    List<Mohafeth_model> mohafeths =
+    await FireStore_Helper.FireStoreHelper.getAllMohafethFromFirestore();
+    this.helperMohafeths = mohafeths;
+    selectHelperMohafeth(mohafeths.first);
+    notifyListeners();
+
+  }
+  getMohafethFromFirestore() async {
+    List<Mohafeth_model> mohafeths =
+    await FireStore_Helper.FireStoreHelper.getAllMohafethFromFirestore();
+    this.mohafeths = mohafeths;
+    selectMohafeth(mohafeths.first);
+    notifyListeners();
+
   }
 
   insertReport() async{
@@ -101,9 +203,9 @@ class ProviderMasjed extends ChangeNotifier{
         birthDate:mohafethBirthdayCon.text,
         feild:mohafethFeildCon.text,
         mobile:mohafethMobileCon.text,
-        familyStatus:mohafethStatus,
+        familyStatus:selectedStatus,
         password:PasswordCon.text,
-        course:mohafethCourse,
+        course:selectedCourse,
       );
       await FireStore_Helper.FireStoreHelper.add("mohafeths",mohafeth.toMap());
       await Auth_Helper.authHelper.logout();
@@ -132,11 +234,11 @@ class ProviderMasjed extends ChangeNotifier{
         fatherWork:studentFatherWorkCon.text,
         mobile:studentMobileCon.text,
         classRoom: studentClassCon.text,
-        chainName: "hi",
-        familyStatus:studentStatus,
+        chainName: selectedChain.chainName,
+        familyStatus:selectedStatus,
         password:PasswordCon.text,
         address:studentAddressCon.text,
-        course: studentCourse,
+        course: selectedCourse,
       );
       await FireStore_Helper.FireStoreHelper.add("students",student.toMap());
       await Auth_Helper.authHelper.logout();
@@ -321,18 +423,26 @@ class ProviderMasjed extends ChangeNotifier{
     final Workbook workbook = Workbook();
     //Accessing via index.
     final Worksheet sheet = workbook.worksheets[0];
-    // Set the text value.
-    for(int i=0;i<5;i++){
-      count=i+1;
-      sheet.getRangeByName('A'+count.toString()).setText('ابو بكر');
-      sheet.getRangeByName('B'+count.toString()).setText('احمد اهل');
-      sheet.getRangeByName('C'+count.toString()).setText('قد سمع');
-      sheet.getRangeByName('D'+count.toString()).setText('90');
-      sheet.getRangeByName('E'+count.toString()).setText('ممتاز');
-      sheet.getRangeByName('F'+count.toString()).setText('1/4/2021');
-      sheet.getRangeByName('F'+count.toString()).setText('ابو بكر');
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+    await FirebaseFirestore.instance.collection('exams').get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = querySnapshot.docs;
+    List<Exam_model> exam =
+    docs.map((e) => Exam_model.fromMap(e.data())).toList();
+    exam.forEach((element) {
+      count=count+1;
+      sheet.getRangeByName('A'+count.toString()).setText(element.chainName);
+      sheet.getRangeByName('B'+count.toString()).setText(element.studentName);
+      sheet.getRangeByName('C'+count.toString()).setText(element.examName);
+      sheet.getRangeByName('D'+count.toString()).setText(element.grade);
+      sheet.getRangeByName('E'+count.toString()).setText(element.estimation);
+      sheet.getRangeByName('F'+count.toString()).setText(element.examDate);
+      sheet.getRangeByName('F'+count.toString()).setText(element.examPerson);
       print("done"+count.toString());
-    }
+    });
+
+    count=0;
+    // Set the text value.
+
     //Save and launch the excel.
     final List<int> bytes = workbook.saveAsStream();
     //Dispose the document.

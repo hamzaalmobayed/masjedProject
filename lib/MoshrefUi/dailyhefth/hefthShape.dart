@@ -18,7 +18,7 @@ class HefthShape extends StatelessWidget {
         children: [
           Expanded(flex:1,child: HistoryButton(txt1, 10,textColor,backGroundColor,function),),
           SizedBox(width: 20,),
-          Expanded(flex:5,child: HistoryButton(txt2, 100,textColor,backGroundColor,function),),
+          Expanded(flex:5,child: HistoryButton(txt2, 100,textColor,backGroundColor,(){}),),
         ],
       ),
     );

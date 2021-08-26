@@ -96,9 +96,9 @@ class _MohafethResultState extends State<MohafethResult> {
               DataPlace("تاريخ الميلاد", con1, ProviderMasjed.mohafethBirthdayCon.text, read, enable),
               DataPlace("التخصص الاكاديمي", con1, ProviderMasjed.mohafethFeildCon.text, read, enable),
               DataPlace("رقم الجوال", con1, ProviderMasjed.mohafethMobileCon.text, read, enable),
-              DataPlace("حالة الاسرة", con1,ProviderMasjed.mohafethStatus, read, enable),
+              DataPlace("حالة الاسرة", con1,ProviderMasjed.selectedStatus, read, enable),
               DataPlace("كلمة المرور", con1, ProviderMasjed.PasswordCon.text, read, enable),
-              DataPlace("اخر دورة احكام", con1,ProviderMasjed.mohafethCourse, read, enable),
+              DataPlace("اخر دورة احكام", con1,ProviderMasjed.selectedCourse, read, enable),
 
             ],
           ),

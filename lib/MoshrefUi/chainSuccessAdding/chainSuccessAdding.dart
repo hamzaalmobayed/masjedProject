@@ -109,8 +109,6 @@ class _ChainSuccessAddingState extends State<ChainSuccessAdding> {
                   children: snapshot.data.docs.map((DocumentSnapshot document) {
                     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
                     String name=data["chainName"];
-                    print(data["chainName"]);
-                    print(name.contains(ProviderMasjed.searchingCon.text));
                     if(name.contains(ProviderMasjed.searchingCon.text)){
                       return Column(
                         children: [
@@ -124,27 +122,11 @@ class _ChainSuccessAddingState extends State<ChainSuccessAdding> {
                           DataPlace("المحفظ المساعد", con1, data['chainhelper'], read, enable),
                           DataPlace("الفئة العمرية", con1, data['age'], read, enable),
                           DataPlace("رقم الحلقة", con1, data['number'], read, enable),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20.0),
-                            child: ElevatedButton(
-                              onPressed: ()=>Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>Moshref())),
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(mainColor),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(50.0),
-                                      )
-                                  )
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 10.0),
-                                child: Text("عرض بيانات الطلاب",style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold,),),
-                              ),
-                            ),
-                          ),
                         ],
                       );
 
+                    }else{
+                      return Text("");
                     }
 
                   }).toList(),
@@ -155,7 +137,24 @@ class _ChainSuccessAddingState extends State<ChainSuccessAdding> {
               },
             ),
 
-
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              child: ElevatedButton(
+                onPressed: ()=>Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>Moshref())),
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(mainColor),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                        )
+                    )
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Text("عرض بيانات الطلاب",style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold,),),
+                ),
+              ),
+            ),
 
           ],
         ),

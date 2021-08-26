@@ -96,9 +96,9 @@ class _ChainResultState extends State<ChainResult> {
                   size: 70,
                 ), read, enable, "اسم الحلقة", ProviderMasjed.chainNameCon.text,con1),
                 SizedBox(height: 20,),
-                DataPlace("محفظ الحلقة", con1, "زكريا ابو كميل", read, enable),
-                DataPlace("المحفظ المساعد", con1, "انس عماد حبوب", read, enable),
-                DataPlace("الفئة العمرية", con1, "المرحلة الابتدائية", read, enable),
+                DataPlace("محفظ الحلقة", con1, ProviderMasjed.selectedMohafeth.mohafethName, read, enable),
+                DataPlace("المحفظ المساعد", con1, ProviderMasjed.selectedHelperMohafeth.mohafethName, read, enable),
+                DataPlace("الفئة العمرية", con1,ProviderMasjed.selectedAge, read, enable),
                 DataPlace("عدد الطلاب", con1, ProviderMasjed.chainNumberCon.text, read, enable),
 
               ],

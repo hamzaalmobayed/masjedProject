@@ -12,6 +12,8 @@ import 'package:masjed/model/ChainModel.dart';
 import 'package:masjed/model/MohafethModel.dart';
 import 'package:masjed/nameData.dart';
 import 'package:masjed/provider.dart';
+import 'package:masjed/provider.dart';
+import 'package:masjed/provider.dart';
 import 'package:masjed/searchingResult/chainResult.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +32,15 @@ class _ChainAddingState extends State<ChainAdding> {
 
   bool read=false;
   TextEditingController con1=TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 0),(){
+      Provider.of<ProviderMasjed>(context,listen: false).getAge();
+      Provider.of<ProviderMasjed>(context,listen: false).getMohafethFromFirestore();
+      Provider.of<ProviderMasjed>(context,listen: false).getHelperMohafethFromFirestore();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,9 +85,9 @@ class _ChainAddingState extends State<ChainAdding> {
             onPressed: (){
               Chain_model chain=Chain_model(
                     chainName:ProviderMasjed.chainNameCon.text,
-                    chainMohafeth:"",
-                    chainhelper:"",
-                    age:"",
+                    chainMohafeth:ProviderMasjed.selectedMohafeth.mohafethName,
+                    chainhelper:ProviderMasjed.selectedHelperMohafeth.mohafethName,
+                    age:ProviderMasjed.selectedAge,
                     number:ProviderMasjed.chainNumberCon.text
               );
               ProviderMasjed.add("chains", chain.toMap());
@@ -105,9 +116,88 @@ class _ChainAddingState extends State<ChainAdding> {
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: Column(
                   children: [
-                    DropDownButtonAdding(ProviderMasjed.selectedMohafeth.mohafethName, ProviderMasjed.mohafeths),
-                    DropDownButtonAdding(ProviderMasjed.selectedMohafeth.mohafethName, ProviderMasjed.mohafeths),
-                    DropDownButtonAdding("الفئة العمرية", ["الفئة العمرية"]),
+                    Padding(
+                        padding: const EdgeInsets.only(top: 15.0),
+                        child: DropdownButton<Mohafeth_model>(
+                          value:ProviderMasjed.selectedMohafeth,
+                          icon: Icon(Icons.keyboard_arrow_down_sharp),
+
+                          iconSize: 30,
+                          elevation: 16,
+                          isExpanded: true,
+                          style: TextStyle(color: Colors.grey, fontSize: 17.0,fontFamily:"Cairo",),
+                          underline: Container(
+                            height: 2,
+                            color: mainColor,
+                          ),
+                          onChanged: (newValue) {
+                            ProviderMasjed.selectMohafeth(newValue);
+
+                          },
+                          items:
+                          ProviderMasjed.mohafeths.map((value) {
+                            return DropdownMenuItem<Mohafeth_model>(
+                              value: value,
+                              child: Text(value.mohafethName),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15.0),
+                      child: DropdownButton<Mohafeth_model>(
+                        value:ProviderMasjed.selectedHelperMohafeth,
+                        icon: Icon(Icons.keyboard_arrow_down_sharp),
+
+                        iconSize: 30,
+                        elevation: 16,
+                        isExpanded: true,
+                        style: TextStyle(color: Colors.grey, fontSize: 17.0,fontFamily:"Cairo",),
+                        underline: Container(
+                          height: 2,
+                          color: mainColor,
+                        ),
+                        onChanged: (newValue) {
+                          ProviderMasjed.selectHelperMohafeth(newValue);
+
+                        },
+                        items:
+                        ProviderMasjed.helperMohafeths.map((value) {
+                          return DropdownMenuItem<Mohafeth_model>(
+                            value: value,
+                            child: Text(value.mohafethName),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15.0),
+                      child: DropdownButton<String>(
+                        value:ProviderMasjed.selectedAge,
+                        icon: Icon(Icons.keyboard_arrow_down_sharp),
+
+                        iconSize: 30,
+                        elevation: 16,
+                        isExpanded: true,
+                        style: TextStyle(color: Colors.grey, fontSize: 17.0,fontFamily:"Cairo",),
+                        underline: Container(
+                          height: 2,
+                          color: mainColor,
+                        ),
+                        onChanged: (newValue) {
+                          ProviderMasjed.selectAge(newValue);
+
+                        },
+                        items:
+                        ProviderMasjed.age.map((value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+
                     TextFieldAdding("رقم الحلقة", ProviderMasjed.chainNumberCon),
                   ],
                 ),

@@ -6,7 +6,9 @@ import 'package:masjed/generalBottomBar.dart';
 import 'package:masjed/main.dart';
 import 'package:masjed/MoshrefUi/mohafethAdding/textFieldAdding.dart';
 import 'package:masjed/MoshrefUi/moshref/Moshref.dart';
+import 'package:masjed/model/ExamModel.dart';
 import 'package:masjed/provider.dart';
+import 'package:masjed/searchingResult/examResult.dart';
 import 'package:provider/provider.dart';
 import '../../bottomBar.dart';
 import '../../lists.dart';
@@ -25,6 +27,14 @@ class _ExamAddingState extends State<ExamAdding> {
 
   bool read=false;
   TextEditingController con1=TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 0),(){
+      Provider.of<ProviderMasjed>(context,listen: false).getChainFromFirestore();
+
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,10 +77,19 @@ class _ExamAddingState extends State<ExamAdding> {
           child: FloatingActionButton(
             backgroundColor: mainColor,
             onPressed: (){
-
+              Exam_model exam=Exam_model(
+                chainName: ProviderMasjed.selectedChain.chainName,
+                estimation: ProviderMasjed.conExamEstimation.text,
+                examDate: ProviderMasjed.conExamDate.text,
+                examName: ProviderMasjed.conExamName.text,
+                examPerson: ProviderMasjed.conExamPerson.text,
+                grade: ProviderMasjed.conExamMark.text,
+                studentName: ProviderMasjed.selectedChainStudent.studentName,
+              );
+              ProviderMasjed.add("exams", exam.toMap());
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                        builder: (con) => ExamSuccessAdding(ExamAdding(),DrawerApp())));
+                        builder: (con) => ExamResult(ExamAdding(),DrawerApp())));
             },
             child: Icon(Icons.add,color: Colors.white,size: 30,),
           ),
@@ -80,34 +99,36 @@ class _ExamAddingState extends State<ExamAdding> {
   }
   /*************body**********/
   Widget body(){
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.only(top:20.0,left: 20,right: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Column(
-                children: [
-                  BeginOfPage(Icon(Icons.post_add,color: Colors.black, size: 70)),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Column(
-                      children: [
-                        TextFieldAdding("الجز المختبر", con),
-                        TextFieldAdding("العلامة بالدرجات", con),
-                        TextFieldAdding("التقدير", con),
-                        TextFieldAdding("تاريخ الاختبار", con),
-                        TextFieldAdding("الشيخ المختبر", con),
-                      ],
+    return Consumer<ProviderMasjed>(
+      builder:(context,ProviderMasjed,x)=> SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top:20.0,left: 20,right: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Column(
+                  children: [
+                    BeginOfPage(Icon(Icons.post_add,color: Colors.black, size: 70)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Column(
+                        children: [
+                          TextFieldAdding("الجزء المختبر", ProviderMasjed.conExamName),
+                          TextFieldAdding("العلامة بالدرجات", ProviderMasjed.conExamMark),
+                          TextFieldAdding("التقدير", ProviderMasjed.conExamEstimation),
+                          TextFieldAdding("تاريخ الاختبار", ProviderMasjed.conExamDate),
+                          TextFieldAdding("الشيخ المختبر", ProviderMasjed.conExamPerson),
+                        ],
+                      ),
                     ),
-                  ),
 
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

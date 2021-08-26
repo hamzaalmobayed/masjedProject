@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:masjed/model/ChainModel.dart';
 import 'package:masjed/model/MohafethModel.dart';
 import 'package:masjed/model/StudentModel.dart';
 import 'package:masjed/provider.dart';
@@ -26,6 +27,24 @@ class FireStore_Helper {
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = querySnapshot.docs;
     List<Student_model> users =
     docs.map((e) => Student_model.fromMap(e.data())).toList();
+    print(users.length);
+    return users;
+  }
+  Future<List<Student_model>> getAllSpecifyStudentFromFirestore(String chain) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+    await fireStore.collection('students').where('chainName',isEqualTo: chain).get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = querySnapshot.docs;
+    List<Student_model> users =
+    docs.map((e) => Student_model.fromMap(e.data())).toList();
+    print(users.length);
+    return users;
+  }
+  Future<List<Chain_model>> getAllChainFromFirestore() async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+    await fireStore.collection('chains').get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs = querySnapshot.docs;
+    List<Chain_model> users =
+    docs.map((e) => Chain_model.fromMap(e.data())).toList();
     print(users.length);
     return users;
   }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:masjed/MoshrefUi/dataProcessScreen/screen.dart';
 import 'package:masjed/MoshrefUi/drawer/drawer.dart';
@@ -45,6 +46,8 @@ BuildContext cont;
 
   /*************body**********/
   Widget body(){
+    final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('exams').snapshots();
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
@@ -62,46 +65,35 @@ BuildContext cont;
             ),
             SizedBox(height: 20,),
             HistoryShape("م.", "اسم الطالب", "الجزء المختبر", Colors.white,mainColor,(){}),
-            HistoryShape("1", "مؤمن اكرم اهل", "قد سمع", Colors.black,Colors.white,(){
-              Navigator.of(cont).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (con) => ExamSuccessAdding(ExamDataShow(),DrawerApp())));
-            }),
-            HistoryShape("1", "مؤمن اكرم اهل", "قد سمع", Colors.black,Colors.white,(){
-              Navigator.of(cont).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (con) => ExamSuccessAdding(ExamDataShow(),DrawerApp())));
-            }),
-            HistoryShape("1", "مؤمن اكرم اهل", "قد سمع", Colors.black,Colors.white,(){
-              Navigator.of(cont).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (con) => ExamSuccessAdding(ExamDataShow(),DrawerApp())));
-            }),
-            HistoryShape("1", "مؤمن اكرم اهل", "قد سمع", Colors.black,Colors.white,(){
-              Navigator.of(cont).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (con) => ExamSuccessAdding(ExamDataShow(),DrawerApp())));
-            }),
-            HistoryShape("1", "مؤمن اكرم اهل", "قد سمع", Colors.black,Colors.white,(){
-              Navigator.of(cont).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (con) => ExamSuccessAdding(ExamDataShow(),DrawerApp())));
-            }),
-            HistoryShape("1", "مؤمن اكرم اهل", "قد سمع", Colors.black,Colors.white,(){
-              Navigator.of(cont).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (con) => ExamSuccessAdding(ExamDataShow(),DrawerApp())));
-            }),
-            HistoryShape("1", "مؤمن اكرم اهل", "قد سمع", Colors.black,Colors.white,(){
-              Navigator.of(cont).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (con) => ExamSuccessAdding(ExamDataShow(),DrawerApp())));
-            }),
-            HistoryShape("1", "مؤمن اكرم اهل", "قد سمع", Colors.black,Colors.white,(){
-              Navigator.of(cont).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (con) => ExamSuccessAdding(ExamDataShow(),DrawerApp())));
-            }),
+            StreamBuilder<QuerySnapshot>(
+              stream: _usersStream,
+              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                int count=0;
+                if (snapshot.hasError) {
+                  return Text('Something went wrong');
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                return Column(
+                  children: snapshot.data.docs.map((DocumentSnapshot document) {
+                    int num=++count;
+                    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                    return HistoryShape(num.toString(), data['studentName'], data['examName'], Colors.black,Colors.white,(){
+                      Navigator.of(cont).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (con) => ExamSuccessAdding(ExamDataShow(),DrawerApp())));
+                    });
+                  }).toList(),
+                );
+              },
+            ),
+
+
 
           ],
         ),

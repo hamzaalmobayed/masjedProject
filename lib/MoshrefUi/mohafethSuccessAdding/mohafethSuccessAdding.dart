@@ -123,7 +123,7 @@ class _MohafethSuccessAddingState extends State<MohafethSuccessAdding> {
                       );
                     }else{
                       return Center(
-                        child: Text("لا يوجد نتائج"),
+                        child: Text(""),
                       );
                     }
                   }).toList(),

@@ -35,6 +35,7 @@ class DataPlace extends StatelessWidget {
                 textAlign: TextAlign.center,
                 readOnly: read,
                 controller: controller,
+                style: TextStyle(color: mainColor,fontSize: 18),
                 decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(vertical: 4.0),
                     border: OutlineInputBorder(

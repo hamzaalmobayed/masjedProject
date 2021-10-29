@@ -8,8 +8,9 @@ bool enable;
 String txtTitle;
 String hint;
 TextEditingController con=TextEditingController();
+Function function;
 
-NameInAddingData(this.icon, this.read, this.enable, this.txtTitle, this.hint,this.con);
+NameInAddingData(this.icon, this.read, this.enable, this.txtTitle, this.hint,this.con,this.function);
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +47,12 @@ NameInAddingData(this.icon, this.read, this.enable, this.txtTitle, this.hint,thi
               shape: BoxShape.rectangle,
             ),
             child: TextField(
-
+              onSubmitted: function,
               textAlignVertical: TextAlignVertical.center,
               textAlign: TextAlign.center,
               controller: con,
               readOnly: read,
+              style: TextStyle(color: mainColor,fontSize: 20),
               decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
                   border: OutlineInputBorder(

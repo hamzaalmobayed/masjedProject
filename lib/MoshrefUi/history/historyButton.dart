@@ -6,12 +6,13 @@ class HistoryButton extends StatelessWidget {
   Color textColor;
   Color backGroundColor;
   Function function;
-  HistoryButton(this.name,this.width,this.textColor,this.backGroundColor,this.function);
+  Function function2;
+  HistoryButton(this.name,this.width,this.textColor,this.backGroundColor,this.function,this.function2);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20.0,horizontal: 1),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Container(
           width: width,
           alignment: Alignment.center,
@@ -27,7 +28,7 @@ class HistoryButton extends StatelessWidget {
               ),
             ],
           ),
-          child:InkWell(onTap:function,child: Text(name,style: TextStyle(fontSize: 18,color: textColor),))
+          child:InkWell(onTap:function,child: Text(name,style: TextStyle(fontSize: 14,color: textColor),),onLongPress: function2,)
       ),
     );
   }

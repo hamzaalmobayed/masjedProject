@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:masjed/appBar.dart';
 import 'package:masjed/MoshrefUi/drawer/drawer.dart';
@@ -73,20 +74,48 @@ TextEditingController con1=TextEditingController();
   }
   /*************body**********/
   Widget body(){
+    final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('moshref').snapshots();
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.only(top:20.0,left: 10,right: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "الاسم", "عمار راشد براء اسليم",con1),
-            SizedBox(height: 20,),
-            DataPlace("رقم الهوية", con1, "405203126", read, enable),
-            DataPlace("تاريخ الميلاد", con1, "1/8/1999", read, enable),
-            DataPlace("التخصص الاكاديمي", con1, "طالب مدرسة", read, enable),
-            DataPlace("رقم الجوال", con1, "0597821468", read, enable),
-            DataPlace("رتبة العمل", con1, "مشرف حلقات", read, enable),
-            DataPlace("حالة الاسرة", con1, "متوسطة", read, enable),
+            StreamBuilder<QuerySnapshot>(
+              stream: _usersStream,
+              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                int count=0;
+                if (snapshot.hasError) {
+                  return Text('Something went wrong');
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                return Column(
+                  children: snapshot.data.docs.map((DocumentSnapshot document) {
+                    int num=++count;
+                    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                    return Column(
+                      children: [
+                        NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "الاسم", data["moshrefName"],con1,(v){}),
+                        SizedBox(height: 20,),
+                        DataPlace("رقم الهوية", con1,data["moshrefIdCard"], read, enable),
+                        DataPlace("تاريخ الميلاد", con1,data['birthDate'], read, enable),
+                        DataPlace("التخصص الاكاديمي", con1, data['feild'], read, enable),
+                        DataPlace("رقم الجوال", con1, data['mobile'], read, enable),
+                        DataPlace("رتبة العمل", con1, data['job'], read, enable),
+                        DataPlace("حالة الاسرة", con1, data['familyStatus'], read, enable),
+                      ],
+                    );
+                  }).toList(),
+                );
+              },
+            ),
+
           ],
         ),
       ),

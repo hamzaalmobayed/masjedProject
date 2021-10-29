@@ -34,6 +34,9 @@ dependencies:
   universal_html: ^2.0.8
   syncfusion_flutter_pdf: ^19.1.64-beta
   cloud_firestore: "^2.5.0"
+  intl: ^0.17.0
+  image: ^3.0.1
+  flutter_mobx: ^2.0.2
 
 
 

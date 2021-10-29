@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:masjed/MohafethUi/Mohafeth/mohafeth.dart';
 import 'package:masjed/MohafethUi/dataExport/dataExport.dart';
 import 'package:masjed/MohafethUi/mohafethData/mohafethData.dart';
+import 'package:masjed/MohafethUi/reportAddingMohafeth/reportAddingMohafeth.dart';
+import 'package:masjed/MohafethUi/studentArcheiveSearching/studentArcheiveSearching.dart';
 import 'package:masjed/MohafethUi/studentDataProccess/studentData.dart';
 import 'package:masjed/MohafethUi/studentExam/studentExam.dart';
 import 'package:masjed/MoshrefUi/DailyHefthShow/dailyHefthShow.dart';
@@ -14,6 +16,8 @@ import 'package:masjed/MoshrefUi/mohafethSuccessAdding/mohafethSuccessAdding.dar
 import 'package:masjed/MoshrefUi/myData/myData.dart';
 import 'package:masjed/MoshrefUi/reportAdding/reportAdding.dart';
 import 'package:masjed/appBar.dart';
+import 'package:masjed/provider.dart';
+import 'package:provider/provider.dart';
 
 import 'drawerButton.dart';
 
@@ -68,7 +72,7 @@ class MohafethDrawer extends StatelessWidget {
               ),
               "التقارير و الانجازات",
                   () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>ReportAdding(Mohafeth(),MohafethDrawer())));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>ReportAddingMohafeth(Mohafeth(),MohafethDrawer())));
                   }),
           DrawerButton(
               ImageIcon(
@@ -86,7 +90,8 @@ class MohafethDrawer extends StatelessWidget {
                 size: 30,),
               "ارشيف الحفظ",
                   () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentExam()));
+                    Provider.of<ProviderMasjed>(context,listen: false).getStudentChainFromFirestore();
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentArcheiveSearching()));
               }),
           DrawerButton(
               Icon(
@@ -108,15 +113,20 @@ class MohafethDrawer extends StatelessWidget {
                   () {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>MohafethData()));
               }),
-          DrawerButton(
+          Consumer<ProviderMasjed>(
+              builder:(context,ProviderMasjed,x)=> DrawerButton(
               Icon(
                 Icons.logout_outlined,
                 color: Colors.black,
                 size: 30,
               ),
               "تسجيل خروج", () {
+                ProviderMasjed.loginUser=null;
+                ProviderMasjed.conLoginCard.clear();
+                ProviderMasjed.conLoginPassword.clear();
+                ProviderMasjed.i=0;
             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>Login()));
-          }),
+          })),
         ],
       ),
     );

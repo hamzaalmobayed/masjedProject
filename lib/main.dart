@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:masjed/MohafethUi/Mohafeth/mohafeth.dart';
 import 'package:masjed/MoshrefUi/moshref/Moshref.dart';
 import 'package:masjed/bottomBar.dart';
 import 'package:masjed/provider.dart';
@@ -80,6 +81,7 @@ class _SplashState extends State<Splash> {
 
 
             })));
+    Provider.of<ProviderMasjed>(context,listen: false).getPersons();
   }
 
   @override

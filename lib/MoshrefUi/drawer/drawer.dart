@@ -139,6 +139,9 @@ class DrawerApp extends StatelessWidget {
                 ),
                 "تسجيل خروج", () {
                   ProviderMasjed.logOut();
+                  ProviderMasjed.loginUser=null;
+                  ProviderMasjed.conLoginCard.clear();
+                  ProviderMasjed.conLoginPassword.clear();
               Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>Login()));
             }),
           ),

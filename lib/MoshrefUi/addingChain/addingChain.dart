@@ -111,7 +111,7 @@ class _ChainAddingState extends State<ChainAdding> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              NameInAddingData(ImageIcon(AssetImage("images/group.png"), color: Colors.black, size: 100), read, enable, "اسم الحلقة", "",ProviderMasjed.chainNameCon),
+              NameInAddingData(ImageIcon(AssetImage("images/group.png"), color: Colors.black, size: 100), read, enable, "اسم الحلقة", "",ProviderMasjed.chainNameCon,(v){}),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: Column(

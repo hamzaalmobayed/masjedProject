@@ -4,7 +4,11 @@ import 'package:masjed/MoshrefUi/chainSuccessAdding/chainSuccessAdding.dart';
 import 'package:masjed/MoshrefUi/dataProcessScreen/screen.dart';
 import 'package:masjed/MoshrefUi/drawer/drawer.dart';
 import 'package:masjed/MoshrefUi/history/historyShape.dart';
+import 'package:masjed/chainDataView.dart';
 import 'package:masjed/generalBottomBar.dart';
+import 'package:masjed/model/ChainModel.dart';
+import 'package:masjed/provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../appBar.dart';
 import '../../bottomBar.dart';
@@ -45,53 +49,112 @@ BuildContext cont;
   }
   Widget body(){
     final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('chains').snapshots();
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 40,),
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text("بيانات الحلقات",style: TextStyle(fontSize: 20,color: Colors.black),),
-                ],
+    return Consumer<ProviderMasjed>(
+      builder:(context,ProviderMasjed,x)=> Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 40,),
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("بيانات الحلقات",style: TextStyle(fontSize: 20,color: Colors.black),),
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: 20,),
-            HistoryShape("م.", "اسم الحلقة", "عدد الطلاب", Colors.white,mainColor,(){}),
-            StreamBuilder<QuerySnapshot>(
-              stream: _usersStream,
-              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                int count=0;
-                if (snapshot.hasError) {
-                  return Text('Something went wrong');
-                }
+              SizedBox(height: 20,),
+              HistoryShape("م.", "اسم الحلقة", "عدد الطلاب", Colors.white,mainColor,(){},(){}),
+              StreamBuilder<QuerySnapshot>(
+                stream: _usersStream,
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  int count=0;
+                  if (snapshot.hasError) {
+                    return Text('Something went wrong');
+                  }
 
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(),
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  return snapshot.data.docs.length==0?Container(alignment: Alignment.center,child: Text("لا يوجد حلقات",style: TextStyle(color: mainColor,fontSize: 20),),):Column(
+                    children: snapshot.data.docs.map((DocumentSnapshot document) {
+                      int num=++count;
+                      int studentNum=0;
+                      Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                      ProviderMasjed.students.forEach((element) {
+                        if(element.chainName==data["chainName"])++studentNum;
+                      });
+                      return HistoryShape(num.toString(), data['chainName'],studentNum.toString(), Colors.black,Colors.white,(){
+                        ProviderMasjed.getPressedChain(Chain_model.fromMap(data));
+                        ProviderMasjed.studentNumber=0;
+                        ProviderMasjed.students.forEach((element) {
+                          if(element.chainName==data["chainName"])++ProviderMasjed.studentNumber;
+                        });
+                        Navigator.of(cont).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (con) => ChainDataView(ChainDataShow(),DrawerApp())));
+                      },(){
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                  backgroundColor:mainColor,
+                                  actions: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          TextButton(onPressed: (){
+                                            FirebaseFirestore.instance
+                                                .collection("chains")
+                                                .where("chainName", isEqualTo : data["chainName"])
+                                                .get().then((value){
+                                              value.docs.forEach((element) {
+                                                FirebaseFirestore.instance.collection("chains").doc(element.id).delete().then((value){
+                                                  print("Success!");
+                                                });
+                                              });
+                                            });
+                                            Navigator.of(context).pop();
+                                          },style: TextButton.styleFrom(
+                                            primary: Colors.white,
+                                            backgroundColor: Colors.white,
+                                          ), child: Text("تاكيد",style: TextStyle(color: Colors.black,fontSize: 16),)),
+
+                                          TextButton(onPressed: (){
+                                            Navigator.of(context).pop();
+                                          }, style: TextButton.styleFrom(
+                                            primary: Colors.white,
+                                            backgroundColor: Colors.white,
+                                          ),child: Text("تراجع",style: TextStyle(color: Colors.black,fontSize: 16),)),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                  content:Container(
+                                      height: 80,
+                                      width: double.infinity,
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.zero,
+                                      child: Text("هل تريد حذف الحلقة؟",style: TextStyle(color: Colors.white,fontSize: 18),))
+
+                              );
+                            });
+                      });
+                    }).toList(),
                   );
-                }
-
-                return Column(
-                  children: snapshot.data.docs.map((DocumentSnapshot document) {
-                    int num=++count;
-                    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-                    return HistoryShape(num.toString(), data['chainName'], data['number'], Colors.black,Colors.white,(){
-                      Navigator.of(cont).pushReplacement(
-                          MaterialPageRoute(
-                              builder: (con) => ChainSuccessAdding(ChainDataShow(),DrawerApp())));
-                    });
-                  }).toList(),
-                );
-              },
-            ),
+                },
+              ),
 
 
-          ],
+            ],
+          ),
         ),
       ),
     );

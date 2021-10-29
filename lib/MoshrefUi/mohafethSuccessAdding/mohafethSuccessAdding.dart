@@ -42,8 +42,7 @@ class _MohafethSuccessAddingState extends State<MohafethSuccessAdding> {
       endDrawer: widget.drawer,
       endDrawerEnableOpenDragGesture: false,
       bottomNavigationBar: GeneralBottomBar(widget.widget),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
-      floatingActionButton: floatingButton(),
+
     );
   }
 
@@ -110,7 +109,7 @@ class _MohafethSuccessAddingState extends State<MohafethSuccessAdding> {
                     if(name.contains(ProviderMasjed.searchingCon.text)){
                       return Column(
                         children: [
-                          NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "اسم المحفظ", data["mohafethName"],con1),
+                          NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "اسم المحفظ", data["mohafethName"],con1,(v){}),
                           SizedBox(height: 20,),
                           DataPlace("رقم الهوية", con1, data["mohafethIdCard"], read, enable),
                           DataPlace("تاريخ الميلاد", con1, data["birthDate"], read, enable),

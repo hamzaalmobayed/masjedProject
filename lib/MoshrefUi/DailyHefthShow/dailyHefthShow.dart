@@ -66,14 +66,13 @@ class _DailyHefthShowState extends State<DailyHefthShow> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "اسم الطالب", "عمار راشد براء اسليم",con),
-              NameInAddingData(Text(""), read, enable, "اسم الحلقة", "عمار راشد براء اسليم",con),
+              NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "اسم الطالب", "",ProviderMasjed.conName,(v){}),
               SizedBox(height: 20,),
-              BeginEngHefth("بداية الحفظ", "اية", "سورة", ProviderMasjed.conBeginAya,ProviderMasjed.conBeginSora, "", read, enable),
-              BeginEngHefth("نهاية الحفظ", "اية", "سورة", ProviderMasjed.conEndAya,ProviderMasjed.conEndSora, "", read, enable),
-              DataPlace(" عدد صفحات الحفظ", ProviderMasjed.conPageNumber, "25 صفحة", read, enable),
-              DataPlace("عدد صفحات المراجعة", ProviderMasjed.conRevisionPage, "25 صفحة", read, enable),
-              DataPlace("التقييم العام", ProviderMasjed.conEstimate, "ممتاز", read, enable),
+              BeginEngHefth("بداية الحفظ", "اية", "سورة", ProviderMasjed.conBeginAya,ProviderMasjed.conBeginSora, "", "", read, enable),
+              BeginEngHefth("نهاية الحفظ", "اية", "سورة", ProviderMasjed.conEndAya,ProviderMasjed.conEndSora, "", "", read, enable),
+              DataPlace(" عدد صفحات الحفظ", ProviderMasjed.conPageNumber, "", read, enable),
+              DataPlace("عدد صفحات المراجعة", ProviderMasjed.conRevisionPage, "", read, enable),
+              DataPlace("الدرجة", ProviderMasjed.conEstimate, "", read, enable),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 40.0),
                 child: ElevatedButton(

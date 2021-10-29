@@ -7,8 +7,9 @@ class HistoryShape extends StatelessWidget {
   Color textColor;
   Color backGroundColor;
   Function function;
+  Function function2;
   HistoryShape(
-      this.txt1, this.txt2, this.txt3, this.textColor, this.backGroundColor,this.function);
+      this.txt1, this.txt2, this.txt3, this.textColor, this.backGroundColor,this.function,this.function2);
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +18,11 @@ class HistoryShape extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Expanded(flex:1,child: HistoryButton(txt1, 30,textColor,backGroundColor,function),),
+          Expanded(flex:1,child: HistoryButton(txt1, 30,textColor,backGroundColor,function,function2),),
           SizedBox(width: 8,),
-          Expanded(flex:4,child: HistoryButton(txt2, 100,textColor,backGroundColor,function),),
+          Expanded(flex:4,child: HistoryButton(txt2, 100,textColor,backGroundColor,function,function2),),
           SizedBox(width: 8,),
-          Expanded(flex:3,child: HistoryButton(txt3, 70,textColor,backGroundColor,function)),
+          Expanded(flex:3,child: HistoryButton(txt3, 70,textColor,backGroundColor,function,function2)),
         ],
       ),
     );

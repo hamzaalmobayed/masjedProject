@@ -7,6 +7,8 @@ import 'package:masjed/MoshrefUi/moshref/Moshref.dart';
 import 'package:masjed/MoshrefUi/searching/searching.dart';
 import 'package:masjed/MoshrefUi/studentDataShow/studentDataShow.dart';
 import 'package:masjed/appBar.dart';
+import 'package:masjed/provider.dart';
+import 'package:provider/provider.dart';
 import '../../bottomBar.dart';
 import '../../generalBottomBar.dart';
 BuildContext cont;
@@ -45,58 +47,64 @@ class DataExport extends StatelessWidget {
   }
   /*************body**********/
   Widget body(){
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 60.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                child: Text(
-                  "تصدير بيانات ",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                      color: Colors.black.withOpacity(0.9)),
+    return Consumer<ProviderMasjed>(
+      builder:(context,ProviderMasjed,x)=> ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 60.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                  child: Text(
+                    "تصدير بيانات ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                        color: Colors.black.withOpacity(0.9)),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Column(
-            children: [
-              ProcessButton(
-                  Icon(
-                    Icons.search,
-                    color: Colors.black,
-                    size: 30,
-                  ),
-                  "تصدير بيانات الطلاب",
-                      (){
-
-                      }),
-              ProcessButton(
-                  Icon(
-                    Icons.remove_red_eye,
-                    color: Colors.black,
-                    size: 30,
-                  ),
-                  "تصدير اختبارات الحلقة",
-                      (){
-
-                      }),
-
-            ],
+          SizedBox(
+            height: 20,
           ),
-        )
-      ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Column(
+              children: [
+                ProcessButton(
+                    Icon(
+                      Icons.search,
+                      color: Colors.black,
+                      size: 30,
+                    ),
+                    "تصدير بيانات الطلاب",
+                        (){
+                          ProviderMasjed.getMohafethChainFromFirestore();
+                          ProviderMasjed.getStudentChainFromFirestore();
+                          Future.delayed(Duration(seconds:3)).then((value) =>ProviderMasjed.createExamChain());
+
+                        }),
+                ProcessButton(
+                    Icon(
+                      Icons.remove_red_eye,
+                      color: Colors.black,
+                      size: 30,
+                    ),
+                    "تصدير اختبارات الحلقة",
+                        (){
+                          ProviderMasjed.getExamFromFirestore();
+                          Future.delayed(Duration(seconds:3)).then((value) =>ProviderMasjed.createExamChain());
+                        }),
+
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

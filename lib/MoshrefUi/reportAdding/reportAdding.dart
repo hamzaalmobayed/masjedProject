@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:masjed/MohafethUi/Mohafeth/mohafeth.dart';
+import 'package:masjed/MoshrefUi/drawer/mohafethDrawer.dart';
+import 'package:masjed/MoshrefUi/moshref/Moshref.dart';
 import 'package:masjed/appBar.dart';
 import 'package:masjed/MoshrefUi/drawer/drawer.dart';
 import 'package:masjed/generalBottomBar.dart';
@@ -6,6 +9,9 @@ import 'package:masjed/main.dart';
 import 'package:masjed/MoshrefUi/myData/dataPlace.dart';
 import 'package:masjed/nameData.dart';
 import 'package:masjed/MoshrefUi/reportAdding/beginEngHefth.dart';
+import 'package:masjed/printReport.dart';
+import 'package:masjed/provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../bottomBar.dart';
 class ReportAdding extends StatefulWidget {
@@ -58,41 +64,54 @@ class _ReportAddingState extends State<ReportAdding> {
 
   /*************body**********/
   Widget body(){
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.only(top:20.0,left: 10,right: 10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "اسم المحفظ", "عمار راشد براء اسليم",con),
-            SizedBox(height: 20,),
-            DataPlace("تاريخ بداية التقرير", con1, "1/8/1999", read, enable),
-            DataPlace("تاريخ نهاية التقرير", con1, "1/8/1999", read, enable),
-            BeginEngHefth("بداية الحفظ", "اية", "سورة", con, con,"", read, enable),
-            BeginEngHefth("بداية الحفظ", "اية", "سورة", con,con, "", read, enable),
-            DataPlace(" عدد صفحات الحفظ", con1, "25 صفحة", read, enable),
-            DataPlace("عدد صفحات المراجعة", con1, "25 صفحة", read, enable),
-            DataPlace("عدد ايام الحضور", con1, "5", read, enable),
-            DataPlace("التقييم العام", con1, "ممتاز", read, enable),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 40.0),
-              child: ElevatedButton(
-                onPressed: (){},
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(mainColor),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        )
-                    )
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10),
-                  child: Text("تصدير",style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold,),),
+    String beginDate="";
+    String endDate="";
+    return Consumer<ProviderMasjed>(
+      builder:(context,ProviderMasjed,x)=> SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top:20.0,left: 10,right: 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "اسم المحفظ", "",ProviderMasjed.conStudentReport,(v){
+                ProviderMasjed.nullArray();
+                beginDate='';
+                endDate='';
+                ProviderMasjed.getStudentReportFromFirestore(ProviderMasjed.conStudentReport.text,"01/"+ProviderMasjed.getMonth()+"/"+ProviderMasjed.getYear(),ProviderMasjed.getDate());
+                beginDate="01/"+ProviderMasjed.getMonth()+"/"+ProviderMasjed.getYear();
+                endDate=ProviderMasjed.getDate();
+              }),
+              SizedBox(height: 20,),
+              DataPlace("تاريخ بداية التقرير", con1, beginDate,true, false),
+              DataPlace("تاريخ نهاية التقرير", con1, endDate, true, false),
+              BeginEngHefth("بداية الحفظ", "اية", "سورة", con, con,ProviderMasjed.studentReports==null?"":ProviderMasjed.studentReports.first.beginAya, ProviderMasjed.studentReports==null?"":ProviderMasjed.studentReports.first.beginSora, true, false),
+              BeginEngHefth("بداية الحفظ", "اية", "سورة", con,con, ProviderMasjed.studentReports==null?"":ProviderMasjed.studentReports.last.endAya, ProviderMasjed.studentReports==null?"":ProviderMasjed.studentReports.last.endSora, true, false),
+              DataPlace(" عدد صفحات الحفظ", con1, ProviderMasjed.pageNumber==null?"":ProviderMasjed.pageNumber.toString(),true, false),
+              DataPlace("عدد صفحات المراجعة", con1, ProviderMasjed.revisionPage==null?"":ProviderMasjed.revisionPage.toString(), true, false),
+              DataPlace("عدد ايام الحضور", con1,ProviderMasjed.coming==null?"": ProviderMasjed.coming.toString(), true, false),
+              DataPlace("التقييم العام", con1, ProviderMasjed.assessment==null?"":ProviderMasjed.assessment.toString(), true, false),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 40.0),
+                child: ElevatedButton(
+                  onPressed: (){
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>PrintReport(ReportAdding(Moshref(),DrawerApp()),DrawerApp())));
+                  },
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(mainColor),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          )
+                      )
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10),
+                    child: Text("تصدير",style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold,),),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

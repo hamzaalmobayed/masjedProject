@@ -97,7 +97,7 @@ class _MohafethAddingState extends State<MohafethAdding> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "اسم المحفظ", "",ProviderMasjed.mohafethNameCon),
+              NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "اسم المحفظ", "",ProviderMasjed.mohafethNameCon,(v){}),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40.0),
                 child: Column(

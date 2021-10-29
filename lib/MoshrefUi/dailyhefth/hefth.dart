@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:masjed/MoshrefUi/drawer/drawer.dart';
 import 'package:masjed/MoshrefUi/historyOfDailyHefth/historyOfDailyHefth.dart';
 import 'package:masjed/MoshrefUi/moshref/Moshref.dart';
 import 'package:masjed/generalBottomBar.dart';
+import 'package:masjed/model/ChainModel.dart';
+import 'package:masjed/provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../appBar.dart';
 import '../../bottomBar.dart';
@@ -43,60 +47,58 @@ class Hefth extends StatelessWidget {
   }
   /*************body**********/
   Widget body(){
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 40),
-        child: Column(
-          children: [
-            HefthShape("م.", "اسم الحلقة",  Colors.white,mainColor,(){}),
-            HefthShape("1", "مهند امين اهل", mainColor,Colors.white,(){
-              Navigator.of(cont).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (con) => HistoryOfDailyHefth()));
-            }),
-            HefthShape("1", "مهند امين اهل", mainColor,Colors.white,(){
-              Navigator.of(cont).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (con) => HistoryOfDailyHefth()));
-            }),
-            HefthShape("1", "مهند امين اهل", mainColor,Colors.white,(){
-              Navigator.of(cont).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (con) => HistoryOfDailyHefth()));
-            }),
-            HefthShape("1", "مهند امين اهل", mainColor,Colors.white,(){
-              Navigator.of(cont).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (con) => HistoryOfDailyHefth()));
-            }),
-            HefthShape("1", "مهند امين اهل", mainColor,Colors.white,(){
-              Navigator.of(cont).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (con) => HistoryOfDailyHefth()));
-            }),
-            HefthShape("1", "مهند امين اهل", mainColor,Colors.white,(){
-              Navigator.of(cont).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (con) => HistoryOfDailyHefth()));
-            }),
-            HefthShape("1", "مهند امين اهل", mainColor,Colors.white,(){
-              Navigator.of(cont).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (con) => HistoryOfDailyHefth()));
-            }),
-            HefthShape("1", "مهند امين اهل", mainColor,Colors.white,(){
-              Navigator.of(cont).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (con) => HistoryOfDailyHefth()));
-            }),
-            HefthShape("1", "مهند امين اهل", mainColor,Colors.white,(){
-              Navigator.of(cont).pushReplacement(
-                  MaterialPageRoute(
-                      builder: (con) => HistoryOfDailyHefth()));
-            }),
+    final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('chains').snapshots();
+    int count=1;
+    return Consumer<ProviderMasjed>(
+      builder:(context,ProviderMasjed,x)=> SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 40),
+          child: Column(
+            children: [
+              HefthShape("م.", "اسم الحلقة",  Colors.white,mainColor,(){},(){},(){}),
+            StreamBuilder<QuerySnapshot>(
+              stream: _usersStream,
+              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return Text('Something went wrong');
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                return Column(
+                  children: snapshot.data.docs.map((DocumentSnapshot document) {
+                    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                      return Column(
+                        children: [
+                          HefthShape((count++).toString(), data['chainName'], mainColor,Colors.white,(){
+                            print('done');
+                            ProviderMasjed.pressedChain=Chain_model.fromMap(data);
+                            Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                    builder: (con) => HistoryOfDailyHefth()));
+                    },(){},(){})
+                        ]
+
+                      );
 
 
-          ],
+                  }).toList(),
+                );
+
+
+
+              },
+            ),
+
+
+
+
+            ],
+          ),
         ),
       ),
     );

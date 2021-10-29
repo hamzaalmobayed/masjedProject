@@ -5,12 +5,13 @@ class BeginEngHefth extends StatelessWidget {
   String txt1;
   String txt2;
   String txt3;
-  String data;
+  String data1;
+  String data2;
   TextEditingController controller=TextEditingController();
   TextEditingController controller2=TextEditingController();
   bool enable;
   bool read;
-  BeginEngHefth(this.txt1 ,this.txt2,this.txt3,this.controller,this.controller2,this.data,this.read,this.enable);
+  BeginEngHefth(this.txt1 ,this.txt2,this.txt3,this.controller,this.controller2,this.data1,this.data2,this.read,this.enable);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +46,7 @@ class BeginEngHefth extends StatelessWidget {
                     ),
                     filled: true,
                     enabled: enable,
-                    hintText: data,
+                    hintText: data1,
                     hintStyle:TextStyle(fontSize: 18,color:mainColor) ,
                     fillColor: Colors.white70),
               ),
@@ -78,7 +79,7 @@ class BeginEngHefth extends StatelessWidget {
                     ),
                     filled: true,
                     enabled: enable,
-                    hintText: data,
+                    hintText: data2,
                     hintStyle:TextStyle(fontSize: 18,color:mainColor) ,
                     fillColor: Colors.white70),
               ),

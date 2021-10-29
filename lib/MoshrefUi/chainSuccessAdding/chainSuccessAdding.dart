@@ -42,8 +42,7 @@ class _ChainSuccessAddingState extends State<ChainSuccessAdding> {
       endDrawer:widget.drawer,
       endDrawerEnableOpenDragGesture: false,
       bottomNavigationBar: GeneralBottomBar(widget.widget),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
-      floatingActionButton: floatingButton(),
+
     );
   }
 
@@ -116,7 +115,7 @@ class _ChainSuccessAddingState extends State<ChainSuccessAdding> {
                             AssetImage("images/group.png"),
                             color: Colors.black,
                             size: 70,
-                          ), read, enable, "اسم الحلقة", data['chainName'],con1),
+                          ), read, enable, "اسم الحلقة", data['chainName'],con1,(v){}),
                           SizedBox(height: 20,),
                           DataPlace("محفظ الحلقة", con1, data['chainMohafeth'], read, enable),
                           DataPlace("المحفظ المساعد", con1, data['chainhelper'], read, enable),

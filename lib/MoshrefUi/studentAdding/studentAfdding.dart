@@ -100,7 +100,7 @@ class _StudentAddingState extends State<StudentAdding> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "اسم الطالب", "",ProviderMasjed.studentNameCon),
+              NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "اسم الطالب", "",ProviderMasjed.studentNameCon,(v){}),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: Column(

@@ -6,6 +6,7 @@ import 'package:masjed/MoshrefUi/myData/dataPlace.dart';
 import 'package:masjed/appBar.dart';
 import 'package:masjed/generalBottomBar.dart';
 import 'package:masjed/main.dart';
+import 'package:masjed/model/ChainModel.dart';
 
 import 'package:masjed/nameData.dart';
 import 'package:masjed/provider.dart';
@@ -62,20 +63,41 @@ class _ChainResultState extends State<ChainResult> {
     );
   }
   Widget floatingButton(){
-    return Padding(
-      padding: const EdgeInsets.only(top: 80.0),
-      child: CircleAvatar(
-        backgroundColor: Colors.white,
-        radius: 35,
-        child: FloatingActionButton(
-          backgroundColor: mainColor,
-          onPressed: (){
-            setState(() {
-              enable=!enable;
-              read=!read;
-            });
-          },
-          child: Icon(Icons.edit,color: Colors.white,size: 30,),
+    return Consumer<ProviderMasjed>(
+      builder:(context,ProviderMasjed,x)=> Padding(
+        padding: const EdgeInsets.only(top: 80.0),
+        child: CircleAvatar(
+          backgroundColor: Colors.white,
+          radius: 35,
+          child: FloatingActionButton(
+            backgroundColor: mainColor,
+            onPressed: (){
+              setState(() {
+                enable=!enable;
+                read=!read;
+              });
+              if(enable==false){
+                Chain_model chain=Chain_model(
+                    chainName:ProviderMasjed.chainNameCon.text,
+                    chainMohafeth:ProviderMasjed.chainMohafethCon1.text==null?ProviderMasjed.selectedMohafeth.mohafethName:ProviderMasjed.chainMohafethCon1.text,
+                    chainhelper:ProviderMasjed.chainHelperCon1.text==null?ProviderMasjed.selectedHelperMohafeth.mohafethName:ProviderMasjed.chainHelperCon1.text,
+                    age:ProviderMasjed.chainAgeCon1==null?ProviderMasjed.selectedAge:ProviderMasjed.chainAgeCon1,
+                    number:ProviderMasjed.chainNumberCon.text
+                );
+                FirebaseFirestore.instance
+                    .collection("chains")
+                    .where("chainMohafeth", isEqualTo : ProviderMasjed.selectedMohafeth.mohafethName)
+                    .get().then((value){
+                  value.docs.forEach((element) {
+                    FirebaseFirestore.instance.collection("chains").doc(element.id).update(chain.toMap()).then((value){
+                      print("Success!");
+                    });
+                  });
+                });
+              }
+            },
+            child: Icon(Icons.edit,color: Colors.white,size: 30,),
+          ),
         ),
       ),
     );
@@ -94,12 +116,12 @@ class _ChainResultState extends State<ChainResult> {
                   AssetImage("images/group.png"),
                   color: Colors.black,
                   size: 70,
-                ), read, enable, "اسم الحلقة", ProviderMasjed.chainNameCon.text,con1),
+                ), read, enable, "اسم الحلقة", ProviderMasjed.chainNameCon.text,ProviderMasjed.chainNameCon,(v){}),
                 SizedBox(height: 20,),
-                DataPlace("محفظ الحلقة", con1, ProviderMasjed.selectedMohafeth.mohafethName, read, enable),
-                DataPlace("المحفظ المساعد", con1, ProviderMasjed.selectedHelperMohafeth.mohafethName, read, enable),
-                DataPlace("الفئة العمرية", con1,ProviderMasjed.selectedAge, read, enable),
-                DataPlace("عدد الطلاب", con1, ProviderMasjed.chainNumberCon.text, read, enable),
+                DataPlace("محفظ الحلقة", ProviderMasjed.chainMohafethCon1, ProviderMasjed.selectedMohafeth.mohafethName, read, enable),
+                DataPlace("المحفظ المساعد", ProviderMasjed.chainHelperCon1, ProviderMasjed.selectedHelperMohafeth.mohafethName, read, enable),
+                DataPlace("الفئة العمرية", ProviderMasjed.chainAgeCon1,ProviderMasjed.selectedAge, read, enable),
+                DataPlace("عدد الطلاب", ProviderMasjed.chainNumberCon, ProviderMasjed.chainNumberCon.text, read, enable),
 
               ],
             ),

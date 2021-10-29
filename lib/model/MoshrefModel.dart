@@ -4,7 +4,6 @@ class Moshref_model {
   String birthDate;
   String feild;
   String mobile;
-  String chainName;
   String job;
   String familyStatus;
   String password;
@@ -16,7 +15,6 @@ class Moshref_model {
     this.birthDate,
     this.feild ,
     this.mobile,
-    this.chainName,
     this.job,
     this.familyStatus,
     this.password ,
@@ -29,7 +27,6 @@ class Moshref_model {
       birthDate:map['birthDate'],
       feild:map['feild'],
       mobile:map['mobile'],
-      chainName:map['chainName'],
       job:map['job'],
       familyStatus:map['familyStatus'],
       password:map['password'],
@@ -42,6 +39,6 @@ class Moshref_model {
 
   Map<String, dynamic> toMap() {
     return {'moshrefName':moshrefName,'moshrefIdCard':moshrefIdCard,'birthDate':birthDate
-      ,'feild':feild,'mobile':mobile,'chainName':chainName,'job':job,'familyStatus':familyStatus,'password':password};
+      ,'feild':feild,'mobile':mobile,'job':job,'familyStatus':familyStatus,'password':password};
   }
 }

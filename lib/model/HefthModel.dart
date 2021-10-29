@@ -7,6 +7,8 @@ class Hefth_Model {
   String pageNumber;
   String revisionPage;
   String estimate;
+  String date;
+  String chainName;
 
   Hefth_Model(
       {
@@ -18,23 +20,27 @@ class Hefth_Model {
         this.pageNumber,
         this.revisionPage,
         this.estimate,
+        this.date,
+        this.chainName
         });
 
   factory Hefth_Model.fromMap(Map<String, dynamic> map) {
     return Hefth_Model(
-      studentNameHefth: map['studentName'],
+      studentNameHefth: map['studentNameHefth'],
       beginAya:map['beginAya'],
       beginSora:map['beginSora'],
       endAya:map['endAya'],
       endSora:map['endSora'],
       pageNumber:map['pageNumber'],
-      revisionPage:map['revisionPge'],
+      revisionPage:map['revisionPage'],
       estimate:map['estimate'],
+      date:map['date'],
+      chainName:map['chainName'],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {'studentNameHefth':studentNameHefth,'beginAya':beginAya,'beginSora':beginSora
-      ,'endAya':endAya,'endSora':endSora,'pageNumber':pageNumber,'revisionPage':revisionPage,'estimate':estimate};
+      ,'endAya':endAya,'endSora':endSora,'pageNumber':pageNumber,'revisionPage':revisionPage,'estimate':estimate,'date':date,'chainName':chainName};
   }
 }

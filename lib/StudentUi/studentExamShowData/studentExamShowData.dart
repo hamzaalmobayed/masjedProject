@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:masjed/MoshrefUi/drawer/studentDrawer.dart';
 import 'package:masjed/MoshrefUi/myData/dataPlace.dart';
 import 'package:masjed/appBar.dart';
+import 'package:masjed/model/ExamModel.dart';
 import 'package:masjed/nameData.dart';
 import '../../../../bottomBar.dart';
 
@@ -10,8 +11,8 @@ import '../../main.dart';
 
 class StudentExamShowData extends StatefulWidget {
   Widget widget;
-
-  StudentExamShowData(this.widget);
+  Exam_model e;
+  StudentExamShowData(this.widget,this.e);
 
   @override
   _StudentExamShowDataState createState() => _StudentExamShowDataState();
@@ -63,14 +64,14 @@ class _StudentExamShowDataState extends State<StudentExamShowData> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "اسم الطالب", "عمار راشد براء اسليم",con1),
+            NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "اسم الطالب",  widget.e.studentName,con1 ,(v){}),
             SizedBox(height: 20,),
-            DataPlace("اسم الجزء", con1, "قد سمع", read, enable),
-            DataPlace("تاريخ الاختبار", con1, "12/5/2021", read, enable),
-            DataPlace("العلامة بالدرجات", con1, "80", read, enable),
-            DataPlace("التقدير", con1, "جيد جدا", read, enable),
-            DataPlace("تاريخ الاختبار", con1, "12/5/2021", read, enable),
-            DataPlace("الشيخ المختبر", con1, "12/5/2021", read, enable),
+            DataPlace("اسم الجزء", con1, widget.e.examName, read, enable),
+            DataPlace("تاريخ الاختبار", con1,  widget.e.examDate, read, enable),
+            DataPlace("العلامة بالدرجات", con1,  widget.e.grade, read, enable),
+            DataPlace("التقدير", con1,  widget.e.estimation, read, enable),
+            DataPlace("اسم الحلقة", con1,  widget.e.chainName, read, enable),
+            DataPlace("الشيخ المختبر", con1,  widget.e.examPerson, read, enable),
 
           ],
         ),

@@ -11,7 +11,11 @@ import 'package:masjed/MoshrefUi/report/reportFieldShape.dart';
 import 'package:masjed/MoshrefUi/reportAdding/reportAdding.dart';
 import 'package:masjed/MoshrefUi/studentSuccessAdding/StudentSuccessAdding.dart';
 import 'package:masjed/StudentUi/student/student.dart';
+import 'package:masjed/StudentUi/studentHefth/studentHefth.dart';
 import 'package:masjed/generalBottomBar.dart';
+import 'package:masjed/model/HefthModel.dart';
+import 'package:masjed/provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../appBar.dart';
 import '../../bottomBar.dart';
@@ -50,63 +54,107 @@ class StudentDailyHefthScreen extends StatelessWidget {
   }
   /*************body**********/
   Widget body(){
-    return Center(
-      child: SingleChildScrollView(
+    return Consumer<ProviderMasjed>(
+      builder:(context,ProviderMasjed,x)=> Center(
+        child: SingleChildScrollView(
 
-        child: Container(
-          alignment: Alignment.center,
-          margin: EdgeInsets.only(top: 50),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                width: 314,
-                height: 210,
-                decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(0.0, 1.0), //(x,y)
-                        blurRadius: 10.0,
-                      ),
-                    ],
-                    color:mainColor,
-                    borderRadius: BorderRadius.all(Radius.circular(15))
-                ),
-                child:Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+          child: Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(top: 50),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  width: 314,
+                  height: 210,
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          offset: Offset(0.0, 1.0), //(x,y)
+                          blurRadius: 10.0,
+                        ),
+                      ],
+                      color:mainColor,
+                      borderRadius: BorderRadius.all(Radius.circular(15))
+                  ),
+                  child:Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
 
-                  children: [
-                    ReportShape(" اختر تاريخ","",[]),
-                  ],
-                ) ,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 80),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(cont).pushReplacement(
-                        MaterialPageRoute(
-                            builder: (con) => DailyHefthShow(StudentDailyHefthScreen(),StudentDrawer())));
-                  },
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.white),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            side: BorderSide(width: 2,color: mainColor),
-                            borderRadius: BorderRadius.circular(50.0),
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(" اختر تاريخ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.white),),
+                          SizedBox(height: 5,),
+                          Container(
+                            width: 270,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.fromBorderSide(BorderSide(width: 1,)),
+                              borderRadius: BorderRadius.all(Radius.circular(50)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0.0, 1.0), //(x,y)
+                                  blurRadius: 10.0,
+                                ),
+                              ],),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: DropdownButton<Hefth_Model>(
+
+                                isExpanded: true,
+                                underline: SizedBox(),
+                                icon: Icon(Icons.keyboard_arrow_down_sharp,color: Colors.black,),
+                                iconSize: 30,
+                                items: ProviderMasjed.reports.map((Hefth_Model value) {
+                                  return DropdownMenuItem<Hefth_Model>(
+                                    value: value,
+                                    child: Center(child: new Text(value.date)),
+                                  );
+                                }).toList(),
+                                onChanged: (v) {
+                                  ProviderMasjed.selectReport(v);
+                                },
+                                value:ProviderMasjed.selectedHefth,
+                              ),
+                            ),
                           )
+                        ],
                       )
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("تم",style: TextStyle(fontSize: 20,color: mainColor,fontWeight: FontWeight.bold,),),
+                    ],
+                  ) ,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 80),
+                  child: ElevatedButton(
+                    onPressed: () {
+
+                      Navigator.of(cont).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (con) => StudentHefth(StudentDailyHefthScreen(),StudentDrawer())));
+                    },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.white),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              side: BorderSide(width: 2,color: mainColor),
+                              borderRadius: BorderRadius.circular(50.0),
+                            )
+                        )
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("تم",style: TextStyle(fontSize: 20,color: mainColor,fontWeight: FontWeight.bold,),),
+                    ),
                   ),
                 ),
-              ),
 
 
-            ],
+              ],
+            ),
           ),
         ),
       ),

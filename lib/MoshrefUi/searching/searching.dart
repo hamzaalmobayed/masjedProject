@@ -129,6 +129,8 @@ BuildContext context;
                         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentSuccessAdding(Searching(txt,drawer),drawer)));
                       }else if(txt=="ادخل اسم الحلقة"){
                         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>ChainSuccessAdding(Searching(txt,drawer),drawer)));
+                      }else if(txt=="ادخل اسم طالب"){
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentSuccessAdding(Searching(txt,drawer),drawer)));
                       }
 
                     },

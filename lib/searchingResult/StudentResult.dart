@@ -5,6 +5,7 @@ import 'package:masjed/MoshrefUi/drawer/drawer.dart';
 import 'package:masjed/generalBottomBar.dart';
 import 'package:masjed/main.dart';
 import 'package:masjed/MoshrefUi/myData/dataPlace.dart';
+import 'package:masjed/model/StudentModel.dart';
 import 'package:masjed/nameData.dart';
 import 'package:masjed/provider.dart';
 import 'package:provider/provider.dart';
@@ -60,20 +61,48 @@ class _StudentResultState extends State<StudentResult> {
     );
   }
   Widget floatingButton(){
-    return Padding(
-      padding: const EdgeInsets.only(top: 80.0),
-      child: CircleAvatar(
-        backgroundColor: Colors.white,
-        radius: 35,
-        child: FloatingActionButton(
-          backgroundColor: mainColor,
-          onPressed: (){
-            setState(() {
-              enable=!enable;
-              read=!read;
-            });
-          },
-          child: Icon(Icons.edit,color: Colors.white,size: 30,),
+    return Consumer<ProviderMasjed>(
+      builder:(context,ProviderMasjed,x)=> Padding(
+        padding: const EdgeInsets.only(top: 80.0),
+        child: CircleAvatar(
+          backgroundColor: Colors.white,
+          radius: 35,
+          child: FloatingActionButton(
+            backgroundColor: mainColor,
+            onPressed: (){
+              setState(() {
+                enable=!enable;
+                read=!read;
+              });
+              if(enable==false){
+                Student_model student=Student_model(
+                  studentName:ProviderMasjed.studentNameCon.text,
+                  studentCard: ProviderMasjed.CardCon.text,
+                  birthDate: ProviderMasjed.studentBirthdayCon.text,
+                  fatherIdCard:ProviderMasjed.studentFatherCardCon.text,
+                  fatherWork:ProviderMasjed.studentFatherWorkCon.text,
+                  mobile:ProviderMasjed.studentMobileCon.text,
+                  classRoom: ProviderMasjed.studentClassCon.text,
+                  chainName: ProviderMasjed.studentChainCon1.text==null?ProviderMasjed.selectedChain.chainName:ProviderMasjed.studentChainCon1.text,
+                  familyStatus:ProviderMasjed.studentStatusCon1.text==null?ProviderMasjed.selectedStatus:ProviderMasjed.studentStatusCon1.text,
+                  password:ProviderMasjed.PasswordCon.text,
+                  address:ProviderMasjed.studentAddressCon.text,
+                  course: ProviderMasjed.studentCourseCon1.text==null?ProviderMasjed.selectedCourse:ProviderMasjed.studentCourseCon1.text,
+                );
+                FirebaseFirestore.instance
+                    .collection("students")
+                    .where("studentCard", isEqualTo : ProviderMasjed.CardCon.text)
+                    .get().then((value){
+                  value.docs.forEach((element) {
+                    FirebaseFirestore.instance.collection("students").doc(element.id).update(student.toMap()).then((value){
+                      print("Success!");
+                    });
+                  });
+                });
+              }
+            },
+            child: Icon(Icons.edit,color: Colors.white,size: 30,),
+          ),
         ),
       ),
     );
@@ -88,19 +117,19 @@ class _StudentResultState extends State<StudentResult> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "اسم الطالب", ProviderMasjed.studentNameCon.text,con1),
+              NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "اسم الطالب", ProviderMasjed.studentNameCon.text,ProviderMasjed.studentNameCon,(v){}),
               SizedBox(height: 20,),
-              DataPlace("رقم الهوية", con1, ProviderMasjed.CardCon.text, read, enable),
-              DataPlace("تاريخ الميلاد", con1, ProviderMasjed.studentBirthdayCon.text, read, enable),
-              DataPlace("الصف المدرسي", con1, ProviderMasjed.studentClassCon.text, read, enable),
-              DataPlace("رقم الجوال", con1, ProviderMasjed.studentMobileCon.text, read, enable),
-              DataPlace("اسم الحلقة", con1, "", read, enable),
-              DataPlace("حالة الاسرة", con1, ProviderMasjed.selectedStatus, read, enable),
-              DataPlace("اخر دورة احكام", con1, ProviderMasjed.selectedCourse, read, enable),
-              DataPlace("عنوان السكن", con1, ProviderMasjed.studentAddressCon.text, read, enable),
-              DataPlace("عمل الاب", con1, ProviderMasjed.studentFatherWorkCon.text, read, enable),
-              DataPlace("رقم هوية الاب", con1,ProviderMasjed.studentFatherCardCon.text, read, enable),
-              DataPlace("كلمة المرور", con1,  ProviderMasjed.PasswordCon.text, read, enable),
+              DataPlace("رقم الهوية", ProviderMasjed.CardCon, ProviderMasjed.CardCon.text, read, enable),
+              DataPlace("تاريخ الميلاد", ProviderMasjed.studentBirthdayCon, ProviderMasjed.studentBirthdayCon.text, read, enable),
+              DataPlace("الصف المدرسي", ProviderMasjed.studentClassCon, ProviderMasjed.studentClassCon.text, read, enable),
+              DataPlace("رقم الجوال", ProviderMasjed.studentMobileCon, ProviderMasjed.studentMobileCon.text, read, enable),
+              DataPlace("اسم الحلقة", ProviderMasjed.studentChainCon1, ProviderMasjed.selectedChain.chainName, read, enable),
+              DataPlace("حالة الاسرة",ProviderMasjed.studentStatusCon1 , ProviderMasjed.selectedStatus, read, enable),
+              DataPlace("اخر دورة احكام", ProviderMasjed.studentCourseCon1, ProviderMasjed.selectedCourse, read, enable),
+              DataPlace("عنوان السكن", ProviderMasjed.studentAddressCon, ProviderMasjed.studentAddressCon.text, read, enable),
+              DataPlace("عمل الاب", ProviderMasjed.studentFatherWorkCon, ProviderMasjed.studentFatherWorkCon.text, read, enable),
+              DataPlace("رقم هوية الاب", ProviderMasjed.studentFatherCardCon,ProviderMasjed.studentFatherCardCon.text, read, enable),
+              DataPlace("كلمة المرور", ProviderMasjed.PasswordCon,  ProviderMasjed.PasswordCon.text, read, enable),
 
 
             ],

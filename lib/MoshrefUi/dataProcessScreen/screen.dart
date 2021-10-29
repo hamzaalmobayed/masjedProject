@@ -2,16 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:masjed/MoshrefUi/drawer/drawer.dart';
 import 'package:masjed/MoshrefUi/moshref/Moshref.dart';
 import 'package:masjed/appBar.dart';
+import 'package:masjed/provider.dart';
+import 'package:provider/provider.dart';
 import '../../bottomBar.dart';
 import '../../generalBottomBar.dart';
 BuildContext cont;
-class Screen extends StatelessWidget {
+class Screen extends StatefulWidget {
   List<Widget> children;
   String txt;
 
   Screen(this.children, this.txt);
 
+  @override
+  _ScreenState createState() => _ScreenState();
+}
+
+class _ScreenState extends State<Screen> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  @override
+  void initState() {
+    // TODO: implement initStates
+    super.initState();
+    Provider.of<ProviderMasjed>(context,listen: false).getMohafethFromFirestore();
+
+  }
   @override
   Widget build(BuildContext context) {
     cont=context;
@@ -42,6 +56,7 @@ class Screen extends StatelessWidget {
       },
     );
   }
+
 /*************body**********/
 Widget body(){
     return ListView(
@@ -54,7 +69,7 @@ Widget body(){
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: Text(
-                  txt,
+                  widget.txt,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
@@ -70,7 +85,7 @@ Widget body(){
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Column(
-            children: children,
+            children: widget.children,
           ),
         )
       ],

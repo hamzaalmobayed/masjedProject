@@ -40,8 +40,6 @@ class _StudentSuccessAddingState extends State<StudentSuccessAdding> {
       endDrawer: widget.drawer,
       endDrawerEnableOpenDragGesture: false,
       bottomNavigationBar: GeneralBottomBar(widget.widget),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
-      floatingActionButton: floatingButton(),
     );
   }
 
@@ -109,7 +107,7 @@ class _StudentSuccessAddingState extends State<StudentSuccessAdding> {
                         if(name.contains(ProviderMasjed.searchingCon.text)){
                           return Column(
                             children: [
-                              NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "اسم الطالب", data["studentName"],con1),
+                              NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "اسم الطالب", data["studentName"],con1,(v){}),
                               SizedBox(height: 20,),
                               DataPlace("رقم الهوية", con1, data["studentCard"], read, enable),
                               DataPlace("تاريخ الميلاد", con1, data["birthDate"], read, enable),
@@ -125,6 +123,8 @@ class _StudentSuccessAddingState extends State<StudentSuccessAdding> {
                             ],
                           );
 
+                        }else{
+                          return Text("");
                         }
 
                       }).toList(),

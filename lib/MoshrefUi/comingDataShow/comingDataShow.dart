@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:masjed/MoshrefUi/dataProcessScreen/screen.dart';
 import 'package:masjed/MoshrefUi/drawer/drawer.dart';
 import 'package:masjed/MoshrefUi/history/historyShape.dart';
 import 'package:masjed/generalBottomBar.dart';
+import 'package:masjed/provider.dart';
+import 'package:provider/provider.dart';
 import '../../appBar.dart';
 import '../../bottomBar.dart';
 import '../../lists.dart';
@@ -42,7 +46,10 @@ class ComingDataShow extends StatelessWidget {
 
   /*************bottomBar**********/
   Widget body(){
-    return Padding(
+    final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('coming').snapshots();
+
+    return Consumer<ProviderMasjed>(
+        builder:(context,ProviderMasjed,x)=> Padding(
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
         child: Column(
@@ -58,25 +65,41 @@ class ComingDataShow extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20,),
-            HistoryShape("م.", "اسم المحفظ", "حالة الحضور", Colors.white,mainColor,(){}),
-            HistoryShape("1", "مهند امين اهل", "حاضر", Colors.black,Colors.white,(){}),
-            HistoryShape("1", "مهند امين اهل", "حاضر", Colors.black,Colors.white,(){}),
-            HistoryShape("1", "مهند امين اهل", "حاضر", Colors.black,Colors.white,(){}),
-            HistoryShape("1", "مهند امين اهل", "حاضر", Colors.black,Colors.white,(){}),
-            HistoryShape("1", "مهند امين اهل", "حاضر", Colors.black,Colors.white,(){}),
-            HistoryShape("1", "مهند امين اهل", "حاضر", Colors.black,Colors.white,(){}),
-            HistoryShape("1", "مهند امين اهل", "حاضر", Colors.black,Colors.white,(){}),
-            HistoryShape("1", "مهند امين اهل", "حاضر", Colors.black,Colors.white,(){}),
-            HistoryShape("1", "مهند امين اهل", "حاضر", Colors.black,Colors.white,(){}),
-            HistoryShape("1", "مهند امين اهل", "حاضر", Colors.black,Colors.white,(){}),
-            HistoryShape("1", "مهند امين اهل", "حاضر", Colors.black,Colors.white,(){}),
-            HistoryShape("1", "مهند امين اهل", "حاضر", Colors.black,Colors.white,(){}),
-            HistoryShape("1", "مهند امين اهل", "حاضر", Colors.black,Colors.white,(){}),
-            HistoryShape("1", "مهند امين اهل", "حاضر", Colors.black,Colors.white,(){}),
+            HistoryShape("م.", "اسم المحفظ", "حالة الحضور", Colors.white,mainColor,(){},(){}),
+            StreamBuilder<QuerySnapshot>(
+              stream: _usersStream,
+              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                int count=0;
+                if (snapshot.hasError) {
+                  return Text('Something went wrong');
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                return Column(
+                  children: snapshot.data.docs.map((DocumentSnapshot document) {
+                    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                    if(data['date']==DateFormat('dd/MM/yyyy').format(DateTime.now())){
+                      int num=++count;
+                      return  HistoryShape(num.toString(),data['name'], data['status'], Colors.black,Colors.white,(){},(){});
+
+                    }else{
+                      return SizedBox.shrink();
+                    }
+                  }).toList(),
+                );
+              },
+            ),
+
 
           ],
         ),
       ),
+    )
     );
   }
 }

@@ -21,6 +21,8 @@ import 'package:masjed/StudentUi/studentData/studentData.dart';
 import 'package:masjed/StudentUi/studentExamData/studentExamData.dart';
 import 'package:masjed/StudentUi/studentScreenReport/srudentScreenReport.dart';
 import 'package:masjed/appBar.dart';
+import 'package:masjed/provider.dart';
+import 'package:provider/provider.dart';
 
 import 'drawerButton.dart';
 
@@ -57,6 +59,7 @@ class StudentDrawer extends StatelessWidget {
               ),
               "اصدار التقارير",
                   () {
+                    Provider.of<ProviderMasjed>(context,listen: false).getStudentbeginReportFromFirestore();
                 Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentScreenReport()));
               }),
           DrawerButton(
@@ -84,15 +87,19 @@ class StudentDrawer extends StatelessWidget {
               "حلقتي و المحفظون", () {
             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentChain(Student())));
           }),
-          DrawerButton(
+          Consumer<ProviderMasjed>(
+              builder:(context,ProviderMasjed,x)=>  DrawerButton(
               Icon(
                 Icons.logout_outlined,
                 color: Colors.black,
                 size: 30,
               ),
               "تسجيل خروج", () {
+            ProviderMasjed.loginUser=null;
+            ProviderMasjed.conLoginCard.clear();
+            ProviderMasjed.conLoginPassword.clear();
             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>Login()));
-          }),
+          })),
         ],
       ),
     );

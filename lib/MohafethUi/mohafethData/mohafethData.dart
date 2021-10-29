@@ -7,7 +7,10 @@ import 'package:masjed/generalBottomBar.dart';
 import 'package:masjed/main.dart';
 
 import 'package:masjed/MoshrefUi/myData/dataPlace.dart';
+import 'package:masjed/model/MohafethModel.dart';
 import 'package:masjed/nameData.dart';
+import 'package:masjed/provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../bottomBar.dart';
 class MohafethData extends StatefulWidget {
@@ -35,8 +38,6 @@ class _MohafethDataState extends State<MohafethData> {
       endDrawer: MohafethDrawer(),
       endDrawerEnableOpenDragGesture: false,
       bottomNavigationBar: GeneralBottomBar(Mohafeth()),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
-      floatingActionButton: floatingButton(),
     );
   }
 
@@ -54,42 +55,26 @@ class _MohafethDataState extends State<MohafethData> {
       },
     );
   }
-  Widget floatingButton(){
-    return Padding(
-      padding: const EdgeInsets.only(top: 80.0),
-      child: CircleAvatar(
-        backgroundColor: Colors.white,
-        radius: 35,
-        child: FloatingActionButton(
-          backgroundColor: mainColor,
-          onPressed: (){
-            setState(() {
-              enable=!enable;
-              read=!read;
-            });
-          },
-          child: Icon(Icons.edit,color: Colors.white,size: 30,),
-        ),
-      ),
-    );
-  }
+
   /*************body**********/
   Widget body(){
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.only(top:20.0,left: 10,right: 10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "اسم المحفظ", "عمار راشد براء اسليم",con1),
-            SizedBox(height: 20,),
-            DataPlace("رقم الهوية", con1, "405203126", read, enable),
-            DataPlace("تاريخ الميلاد", con1, "1/8/1999", read, enable),
-            DataPlace("التخصص الاكاديمي", con1, "طالب مدرسة", read, enable),
-            DataPlace("رقم الجوال", con1, "0597821468", read, enable),
-            DataPlace("رتبة العمل", con1, "محفظ", read, enable),
-            DataPlace("حالة الاسرة", con1, "متوسطة", read, enable),
-          ],
+    return Consumer<ProviderMasjed>(
+      builder:(context,ProviderMasjed,x)=> SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top:20.0,left: 10,right: 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              NameInAddingData(Icon(Icons.account_circle_outlined,size: 100,color: Colors.black,), read, enable, "اسم المحفظ", (ProviderMasjed.loginUser as Mohafeth_model).mohafethName,con1,(v){}),
+              SizedBox(height: 20,),
+              DataPlace("رقم الهوية", con1, (ProviderMasjed.loginUser as Mohafeth_model).mohafethIdCard, read, enable),
+              DataPlace("تاريخ الميلاد", con1,(ProviderMasjed.loginUser as Mohafeth_model).birthDate, read, enable),
+              DataPlace("التخصص الاكاديمي", con1,(ProviderMasjed.loginUser as Mohafeth_model).feild, read, enable),
+              DataPlace("رقم الجوال", con1,(ProviderMasjed.loginUser as Mohafeth_model).mobile, read, enable),
+              DataPlace("رتبة العمل", con1, "محفظ", read, enable),
+              DataPlace("حالة الاسرة", con1, (ProviderMasjed.loginUser as Mohafeth_model).familyStatus, read, enable),
+            ],
+          ),
         ),
       ),
     );

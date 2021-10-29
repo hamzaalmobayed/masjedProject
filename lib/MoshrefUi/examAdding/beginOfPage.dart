@@ -66,11 +66,7 @@ class BeginOfPage extends StatelessWidget {
                   items: ProviderMasjed.chains.map(( value) {
                     return DropdownMenuItem<Chain_model>(
                       value: value,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 100),
-                        child: new Text(value.chainName),
-                      ),
+                      child: Center(child: new Text(value.chainName)),
                     );
                   }).toList(),
                   onChanged: (v) {
@@ -128,11 +124,7 @@ class BeginOfPage extends StatelessWidget {
                     items: ProviderMasjed.chainStudent.map(( value) {
                       return DropdownMenuItem<Student_model>(
                         value: value,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 100),
-                          child: new Text(value.studentName),
-                        ),
+                        child: Center(child: new Text(value.studentName)),
                       );
                     }).toList(),
                     onChanged: (v) {

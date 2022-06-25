@@ -19,6 +19,11 @@ import '../../main.dart';
 class StudentScreenReport extends StatelessWidget {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   BuildContext cont;
+  Widget back;
+  Widget drawer;
+
+  StudentScreenReport(this.back, this.drawer);
+
   @override
   Widget build(BuildContext context) {
     cont=context;
@@ -28,10 +33,10 @@ class StudentScreenReport extends StatelessWidget {
         preferredSize: const Size.fromHeight(60),
         child: appBar(),
       ),
-      endDrawer: StudentDrawer(),
+      endDrawer: drawer,
       endDrawerEnableOpenDragGesture: false,
       body: body(),
-      bottomNavigationBar: GeneralBottomBar(Student()),
+      bottomNavigationBar: GeneralBottomBar(back),
     );
   }
   /*************appBar**********/
@@ -173,7 +178,7 @@ class StudentScreenReport extends StatelessWidget {
 
                       Navigator.of(cont).pushReplacement(
                           MaterialPageRoute(
-                              builder: (con) => StudentReport(StudentScreenReport(),StudentDrawer())));
+                              builder: (con) => StudentReport(StudentScreenReport(back,drawer),drawer)));
                     },
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.white),

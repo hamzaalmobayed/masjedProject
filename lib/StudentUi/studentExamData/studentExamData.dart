@@ -20,6 +20,10 @@ import '../../nameData.dart';
 class StudentExamData extends StatelessWidget {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   BuildContext cont;
+  Widget back;
+  Widget drawer;
+
+  StudentExamData(this.back, this.drawer);
   @override
   Widget build(BuildContext context) {
     cont = context;
@@ -30,9 +34,9 @@ class StudentExamData extends StatelessWidget {
         child: appBar(),
       ),
       body: body(),
-      endDrawer: StudentDrawer(),
+      endDrawer: drawer,
       endDrawerEnableOpenDragGesture: false,
-      bottomNavigationBar: GeneralBottomBar(Student()),
+      bottomNavigationBar: GeneralBottomBar(back),
     );
   }
 
@@ -106,7 +110,7 @@ class StudentExamData extends StatelessWidget {
                                 Navigator.of(cont).pushReplacement(
                                     MaterialPageRoute(
                                         builder: (con) => StudentExamShowData(
-                                            StudentExamData(),
+                                            StudentExamData(back,drawer),
                                             Exam_model.fromMap(data))));
                               }, () {});
                             }else{

@@ -4,11 +4,14 @@ import 'package:masjed/StudentUi/student/student.dart';
 import 'package:masjed/bottomBar.dart';
 import 'package:masjed/MoshrefUi/login/textField.dart';
 import 'package:masjed/MoshrefUi/moshref/Moshref.dart';
+import 'package:masjed/fatherUI/father.dart';
 import 'package:masjed/model/MohafethModel.dart';
 import 'package:masjed/model/MoshrefModel.dart';
 import 'package:masjed/model/StudentModel.dart';
 import 'package:masjed/provider.dart';
+import 'package:masjed/sharedPreferences.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../launch.dart';
 import '../../main.dart';
@@ -25,6 +28,7 @@ class _LoginState extends State<Login> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     Provider.of<ProviderMasjed>(context,listen: false).getPersons();
   }
   @override
@@ -89,7 +93,7 @@ class _LoginState extends State<Login> {
                     ProviderMasjed.getDailyHefthFromFirestore();
                     ProviderMasjed.getStudentChainFromFirestore();
                     ProviderMasjed.getStudentChainReport();
-
+                    print("type");
                     showDialog(
                         context: context,
                         builder: (context) {
@@ -158,8 +162,38 @@ class _LoginState extends State<Login> {
                             MaterialPageRoute(builder: (con) => Mohafeth()));
                       } else if (ProviderMasjed.loginUser.runtimeType ==
                           Student_model) {
-                        Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (con) => Student()));
+                        Student_model s=ProviderMasjed.loginUser;
+                        if(ProviderMasjed.cardType=="student"){
+                          if(ProviderMasjed.getAgeOfStudent(s)>=10){
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (con) => Student()));
+                          }else{
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                      backgroundColor:mainColor,
+                                      actions: [
+                                        TextButton(onPressed: (){
+                                          ProviderMasjed.conLoginCard.clear();
+                                          ProviderMasjed.conLoginPassword.clear();
+                                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>Login()));
+                                        }, child: Text("المحاولة مرة اخرى",style: TextStyle(color: Colors.white,fontSize: 16),))
+                                      ],
+                                      content:Container(
+                                          height: 100,
+                                          width: double.infinity,
+                                          alignment: Alignment.center,
+                                          padding: EdgeInsets.zero,
+                                          child: Text("عزيزي الطالب عمرك ما زال صغيرا فقط والدك مسموح له الدخول برقم الهوية!",style: TextStyle(color: Colors.white,fontSize: 18),))
+
+                                  );
+                                });
+                          }
+                        }else if(ProviderMasjed.cardType=="father"){
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(builder: (con) => Father()));
+                        }
                       }
                     });
                   },

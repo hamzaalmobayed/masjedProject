@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 import '../../main.dart';
-class DataPlace extends StatelessWidget {
+class DataPlaceFather extends StatelessWidget {
   String txt;
   String data;
+  Function function;
   TextEditingController controller=TextEditingController();
   bool enable;
   bool read;
-  DataPlace(this.txt, this.controller,this.data,this.read,this.enable);
+  DataPlaceFather(this.txt, this.controller,this.data,this.read,this.enable,this.function);
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +16,10 @@ class DataPlace extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 10),
       child: Row(
         children: [
-          Expanded(flex:2,child: Text(txt,style: TextStyle(fontSize: 18,color: Colors.black),)),
+          Expanded(flex:3,child: Text(txt,style: TextStyle(fontSize: 18,color: Colors.black),)),
+          SizedBox(width: 10,),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Container(
               decoration: new BoxDecoration(
                 color: Colors.white,
@@ -48,7 +50,27 @@ class DataPlace extends StatelessWidget {
               ),
             ),
           ),
-
+          SizedBox(width: 10,),
+          Expanded(
+            flex: 1,
+            child: Container(
+              child: Column(
+                children: [
+                  IconButton(
+                    onPressed: function,
+                    icon: Icon(Icons.phone),
+                    iconSize: 20,
+                    color: Colors.white,
+                  ),
+                ],
+              ),
+              width:20,
+              height: 50,
+              decoration: BoxDecoration(
+                  color:mainColor,
+                  borderRadius: BorderRadius.all(Radius.circular(50))
+              ),
+            ),)
         ],
       ),
     );

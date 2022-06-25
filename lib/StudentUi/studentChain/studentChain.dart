@@ -4,6 +4,8 @@ import 'package:masjed/MoshrefUi/drawer/studentDrawer.dart';
 import 'package:masjed/MoshrefUi/moshref/Moshref.dart';
 import 'package:masjed/MoshrefUi/myData/dataPlace.dart';
 import 'package:masjed/appBar.dart';
+import 'package:masjed/fatherUI/datsaPlaceFather.dart';
+import 'package:masjed/launch.dart';
 import 'package:masjed/main.dart';
 
 import 'package:masjed/nameData.dart';
@@ -13,9 +15,10 @@ import 'package:provider/provider.dart';
 import '../../bottomBar.dart';
 import '../../generalBottomBar.dart';
 class StudentChain extends StatefulWidget {
-  Widget widget;
+  Widget back;
+  Widget drawer;
 
-  StudentChain(this.widget);
+  StudentChain(this.back, this.drawer);
 
   @override
   _StudentChainState createState() => _StudentChainState();
@@ -38,9 +41,9 @@ class _StudentChainState extends State<StudentChain> {
         child: appBar(),
       ),
       body: body(),
-      endDrawer: StudentDrawer(),
+      endDrawer: widget.drawer,
       endDrawerEnableOpenDragGesture: false,
-      bottomNavigationBar: GeneralBottomBar(widget.widget),
+      bottomNavigationBar: GeneralBottomBar(widget.back),
     );
   }
 
@@ -77,8 +80,22 @@ class _StudentChainState extends State<StudentChain> {
                 size: 70,
               ), read, enable, "اسم الحلقة", ProviderMasjed.chain.first.chainName,con1,(v){}),
               SizedBox(height: 20,),
-              DataPlace("محفظ الحلقة", con1, ProviderMasjed.chain.first.chainMohafeth, read, enable),
-              DataPlace("المحفظ المساعد", con1, ProviderMasjed.chain.first.chainhelper, read, enable),
+              DataPlaceFather("محفظ الحلقة", con1, ProviderMasjed.chain.first.chainMohafeth, read, enable,(){
+                ProviderMasjed.mohafeths.forEach((element) {
+                  if(element.mohafethName==ProviderMasjed.chain.first.chainMohafeth){
+                    UrlLauncher.urlLuncher.openWhatsApp(element.mobile);
+                  }
+                });
+
+              }),
+              DataPlaceFather("المحفظ المساعد", con1, ProviderMasjed.chain.first.chainhelper, read, enable,(){
+                ProviderMasjed.mohafeths.forEach((element) {
+                  if(element.mohafethName==ProviderMasjed.chain.first.chainhelper){
+                    UrlLauncher.urlLuncher.openWhatsApp(element.mobile);
+                  }
+                });
+
+              }),
 
             ],
           ),

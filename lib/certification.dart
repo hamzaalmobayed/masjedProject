@@ -8,10 +8,13 @@ import 'package:masjed/main.dart';
 import 'package:masjed/provider.dart';
 import 'package:provider/provider.dart';
 
+import 'model/ExamModel.dart';
+
 class PngHome extends StatefulWidget {
   Widget widget;
   Widget drawer;
-  PngHome(this.widget, this.drawer);
+  Exam_model exam;
+  PngHome(this.exam,this.widget, this.drawer);
 
   @override
   _PngHomeState createState() => _PngHomeState();
@@ -21,8 +24,7 @@ class _PngHomeState extends State<PngHome> {
   GlobalKey globalKey = GlobalKey();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   Future<void> readImageData() async {
-    RenderRepaintBoundary boundary =
-        globalKey.currentContext.findRenderObject();
+    RenderRepaintBoundary boundary = globalKey.currentContext.findRenderObject();
     ui.Image image = await boundary.toImage();
     ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     Uint8List pngBytes = byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes);
@@ -53,37 +55,37 @@ class _PngHomeState extends State<PngHome> {
                 children: [
                   Image.asset('images/certification.jpg'),
                   Positioned(
-                    top: 100,
+                    top: 110,
                     right: 0,
                     child: Container(
                       width: 360,
                       child: Center(
                         child: Text(
-                          ProviderMasjed.pressedExam.studentName,
+                          widget.exam.studentName,
                           style: TextStyle(color:mainColor, fontSize: 18),),
                       ),
                     )),
                   Positioned(
                       top: 120,
-                      right: 100,
+                      right: 80,
                       child: Container(
                         child: Text(
-                            ProviderMasjed.pressedExam.examName,
+                          widget.exam.examName,
                           style: TextStyle(color:mainColor, fontSize: 15),),
                       )),
                   Positioned(
                       top: 142,
-                      right: 210,
+                      right: 230,
                       child: Container(
                         child: Text(
-                          ProviderMasjed.pressedExam.estimation,
+                          widget.exam.estimation,
                           style: TextStyle(color:mainColor, fontSize: 15),),
                       )),
                   Positioned(
                       top: 142,
-                      left: 50,
+                      left: 30,
                       child: Text(
-                        ProviderMasjed.pressedExam.grade,
+                        widget.exam.grade,
                         style: TextStyle(color:mainColor, fontSize: 15),)),
 
                 ],

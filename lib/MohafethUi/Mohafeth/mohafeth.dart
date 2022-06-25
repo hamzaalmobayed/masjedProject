@@ -28,6 +28,7 @@ class _MohafethState extends State<Mohafeth> {
     Provider.of<ProviderMasjed>(context,listen: false).getAllReports();
     Provider.of<ProviderMasjed>(context,listen: false).getMohafethChainFromFirestore();
     Provider.of<ProviderMasjed>(context,listen: false).getExamFromFirestore();
+    Provider.of<ProviderMasjed>(context,listen: false).getAllChats();
     Provider.of<ProviderMasjed>(context,listen: false).getAllExamFromFirestore();
     Future.delayed(Duration(seconds: 1)).then((value) =>Provider.of<ProviderMasjed>(context,listen: false).getStudentChainReport()
     );
@@ -206,7 +207,7 @@ class _MohafethState extends State<Mohafeth> {
         child: ListView(
           children: [
             SizedBox(height: 50,),
-            Text("اهلا بك, مشرف الحلقات",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.grey),),
+            Text("اهلا بك, محفظ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.grey),),
             Name((ProviderMasjed.loginUser as Mohafeth_model).mohafethName),
             SizedBox(height: 60,),
             Text("اخر التحديثات",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.grey),),

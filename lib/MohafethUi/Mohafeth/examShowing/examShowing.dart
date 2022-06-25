@@ -1,6 +1,14 @@
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:masjed/MohafethUi/studentExam/studentExam.dart';
+import 'package:masjed/MoshrefUi/drawer/mohafethDrawer.dart';
+import 'package:masjed/MoshrefUi/examSuccessAdding/examSuccessAdding.dart';
 import 'package:masjed/MoshrefUi/myData/dataPlace.dart';
 import 'package:masjed/appBar.dart';
+import 'package:masjed/certification.dart';
 import 'package:masjed/generalBottomBar.dart';
 import 'package:masjed/main.dart';
 import 'package:masjed/nameData.dart';
@@ -20,6 +28,7 @@ class ExamShowing extends StatefulWidget {
 
 class _ExamShowingState extends State<ExamShowing> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
 
   bool enable=false;
 
@@ -77,7 +86,7 @@ class _ExamShowingState extends State<ExamShowing> {
                 padding: const EdgeInsets.symmetric(vertical: 40.0),
                 child: ElevatedButton(
                   onPressed: (){
-                    ProviderMasjed.createPDF();
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>PngHome(ProviderMasjed.studentArcheive.first,ExamShowing(StudentExam(),MohafethDrawer()),MohafethDrawer())));
                   },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(mainColor),

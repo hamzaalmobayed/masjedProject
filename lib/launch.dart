@@ -10,15 +10,25 @@ class UrlLauncher{
 
   sendPhone(){
     try{
-      _url="tel:+972 59-289-1447";
+      _url="tel:+972 59-558-8163";
       lunch(_url);
     }catch(e){
       print(e);
     }
   }
+
+  openWhatsApp(var num){
+    try{
+      _url="https://wa.me/$num";
+      lunch(_url);
+    }catch(e){
+      print(e);
+    }
+  }
+
   openFacebook(){
     try{
-      _url="https://www.facebook.com/search/top/?q=%D9%85%D8%B3%D8%AC%D8%AF%20%D8%A7%D9%84%D9%87%D8%AC%D8%A7%D9%86%D9%89";
+      _url="https://www.facebook.com/AbrarCenter";
       lunch(_url);
     }catch(e){
       print(e);

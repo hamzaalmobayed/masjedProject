@@ -23,16 +23,16 @@ class _ComingAddState extends State<ComingAdd> {
   @override
   void initState() {
     super.initState();
-    Provider.of<ProviderMasjed>(context,listen: false).getComingFromFirestore();
+    print(Provider.of<ProviderMasjed>(context,listen: false).isComing.toString()+'isComing///////////////');
     Future.delayed(Duration(seconds: 1)).then((value) {
-      if(Provider.of<ProviderMasjed>(context,listen: false).comingList.length==0||Provider.of<ProviderMasjed>(context,listen: false).comingList.last.date!=DateFormat('dd/MM/yyyy').format(DateTime.now())){
+      if(Provider.of<ProviderMasjed>(context,listen: false).comingList.length==0||Provider.of<ProviderMasjed>(context,listen: false).isComing){
         Provider.of<ProviderMasjed>(context,listen: false).mohafeths.forEach((element) {
           print(element.mohafethName+'///////////////');
           String name=element.mohafethName;
           String date=Provider.of<ProviderMasjed>(context,listen: false).getDate();
           FireStore_Helper.FireStoreHelper.add("coming", {
             "name":name,
-            "status":"لم يسجل",
+            "status":"غائب",
             "date":date,
             "id":"",
             "color":"Colors.white"

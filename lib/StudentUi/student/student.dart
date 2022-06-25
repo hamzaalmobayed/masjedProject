@@ -38,6 +38,7 @@ class _StudentState extends State<Student> {
     Provider.of<ProviderMasjed>(context,listen: false).getSpecifyChainStudentFromFirestore();
     Provider.of<ProviderMasjed>(context,listen: false).getStudentbeginReportFromFirestore();
     Provider.of<ProviderMasjed>(context,listen: false).getDailyHefthFromFirestore();
+    Provider.of<ProviderMasjed>(context,listen: false).getAllChats();
 
 
   }
@@ -244,7 +245,7 @@ class _StudentState extends State<Student> {
                       ),
                       "التقارير ",
                           () {
-                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentScreenReport()));
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentScreenReport(Student(),StudentDrawer())));
                           }),
                 ),
                 Expanded(
@@ -255,7 +256,7 @@ class _StudentState extends State<Student> {
                         size: 40,),
                       "الارشيف ",
                           () {
-                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentDailyHefthScreen()));
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentDailyHefthScreen(Student(),StudentDrawer())));
                           }),
                 ),
               ],
@@ -272,7 +273,7 @@ class _StudentState extends State<Student> {
                       ),
                       "الاختبارات",
                           () {
-                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentExamData()));
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentExamData(Student(),StudentDrawer())));
                           }),
                 ),
                 Expanded(
@@ -285,7 +286,7 @@ class _StudentState extends State<Student> {
                       ),
                       "المحفظون ",
                           () {
-                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentChain(Student())));
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentChain(Student(),StudentDrawer())));
                           }),
                 ),
                 Expanded(

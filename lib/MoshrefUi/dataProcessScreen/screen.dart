@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:masjed/MoshrefUi/drawer/drawer.dart';
 import 'package:masjed/MoshrefUi/moshref/Moshref.dart';
 import 'package:masjed/appBar.dart';
@@ -24,6 +25,18 @@ class _ScreenState extends State<Screen> {
     // TODO: implement initStates
     super.initState();
     Provider.of<ProviderMasjed>(context,listen: false).getMohafethFromFirestore();
+    Provider.of<ProviderMasjed>(context,listen: false).getComingFromFirestore();
+    Provider.of<ProviderMasjed>(context,listen: false).isComing=true;
+    Provider.of<ProviderMasjed>(context,listen: false).comingList.forEach((element) {
+      print(element.date+'/************/');
+    });
+    for(int i=0;i<Provider.of<ProviderMasjed>(context,listen: false).comingList.length;i++){
+      if(Provider.of<ProviderMasjed>(context,listen: false).comingList[i].date==DateFormat('dd/MM/yyyy').format(DateTime.now())){
+        Provider.of<ProviderMasjed>(context,listen: false).isComing=false;
+        print(Provider.of<ProviderMasjed>(context,listen: false).isComing);
+        break;
+      }
+    }
 
   }
   @override

@@ -23,6 +23,10 @@ import '../../main.dart';
 class StudentDailyHefthScreen extends StatelessWidget {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   BuildContext cont;
+  Widget back;
+  Widget drawer;
+
+  StudentDailyHefthScreen(this.back, this.drawer);
   @override
   Widget build(BuildContext context) {
     cont=context;
@@ -32,10 +36,10 @@ class StudentDailyHefthScreen extends StatelessWidget {
         preferredSize: const Size.fromHeight(60),
         child: appBar(),
       ),
-      endDrawer: StudentDrawer(),
+      endDrawer: drawer,
       endDrawerEnableOpenDragGesture: false,
       body: body(),
-      bottomNavigationBar: GeneralBottomBar(Student()),
+      bottomNavigationBar: GeneralBottomBar(back),
     );
   }
   /*************appBar**********/
@@ -134,7 +138,7 @@ class StudentDailyHefthScreen extends StatelessWidget {
 
                       Navigator.of(cont).pushReplacement(
                           MaterialPageRoute(
-                              builder: (con) => StudentHefth(StudentDailyHefthScreen(),StudentDrawer())));
+                              builder: (con) => StudentHefth(StudentDailyHefthScreen(back,drawer),drawer)));
                     },
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.white),

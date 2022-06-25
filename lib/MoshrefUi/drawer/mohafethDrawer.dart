@@ -17,6 +17,7 @@ import 'package:masjed/MoshrefUi/myData/myData.dart';
 import 'package:masjed/MoshrefUi/reportAdding/reportAdding.dart';
 import 'package:masjed/appBar.dart';
 import 'package:masjed/provider.dart';
+import 'package:masjed/sharedPreferences.dart';
 import 'package:provider/provider.dart';
 
 import 'drawerButton.dart';
@@ -122,6 +123,7 @@ class MohafethDrawer extends StatelessWidget {
               ),
               "تسجيل خروج", () {
                 ProviderMasjed.loginUser=null;
+                Helper.x.Signout("login");
                 ProviderMasjed.conLoginCard.clear();
                 ProviderMasjed.conLoginPassword.clear();
                 ProviderMasjed.i=0;

@@ -65,7 +65,7 @@ class _PrintReportState extends State<PrintReport> {
                           ),
                         )),
                     Positioned(
-                        top: 155,
+                        top: 150,
                         right: 156,
                         child: Container(
                           width: 172,
@@ -76,51 +76,51 @@ class _PrintReportState extends State<PrintReport> {
                           ),
                         )),
                     Positioned(
-                        top: 285,
+                        top: 282,
                         right: 156,
                         child: Container(
                           width: 172,
                           child: Center(
                             child: Text(
-                              ProviderMasjed.pageNumber.toString(),
+                              ProviderMasjed.pageNumber==null?"0":ProviderMasjed.pageNumber.toString(),
                               style: TextStyle(color:mainColor, fontSize: 15),),
                           ),
                         )),
                     Positioned(
-                        top: 317,
+                        top: 314,
                         right: 156,
                         child: Container(
                           width: 172,
                           child: Center(
                             child: Text(
-                              ProviderMasjed.revisionPage.toString(),
+                              ProviderMasjed.revisionPage==null?"0":ProviderMasjed.coming.toString(),
                               style: TextStyle(color:mainColor, fontSize: 15),),
                           ),
                         )),
                     Positioned(
-                        top: 350,
+                        top: 344,
                         right: 156,
                         child: Container(
                           width: 172,
                           child: Center(
                             child: Text(
-                              ProviderMasjed.coming.toString(),
+                              ProviderMasjed.coming==null?"0":ProviderMasjed.coming.toString(),
                               style: TextStyle(color:mainColor, fontSize: 15),),
                           ),
                         )),
                     Positioned(
-                        top: 385,
+                        top: 370,
                         right: 156,
                         child: Container(
                           width: 172,
                           child: Center(
                             child: Text(
-                              ProviderMasjed.assessment,
+                              ProviderMasjed.assessment==null?"راسب":ProviderMasjed.assessment,
                               style: TextStyle(color:mainColor, fontSize: 15),),
                           ),
                         )),
                     Positioned(
-                        top: 184,
+                        top: 180,
                         right: 156,
                         child: Container(
                           width: 172,
@@ -131,46 +131,46 @@ class _PrintReportState extends State<PrintReport> {
                           ),
                         )),
                     Positioned(
-                        top: 218,
-                        right: 175,
+                        top: 215,
+                        right: 140,
                         child: Container(
                           width: 35,
                           child: Center(
                             child: Text(
-                              ProviderMasjed.studentReports.first.beginAya,
+                              ProviderMasjed.studentReports==null?"0":ProviderMasjed.studentReports.first.beginAya,
                               style: TextStyle(color:mainColor, fontSize: 15),),
                           ),
                         )),
                     Positioned(
-                        top: 250,
-                        right: 175,
+                        top: 248,
+                        right: 140,
                         child: Container(
                           width: 35,
                           child: Center(
                             child: Text(
-                              ProviderMasjed.studentReports.last.endAya,
+                              ProviderMasjed.studentReports==null?"0":ProviderMasjed.studentReports.last.endAya,
                               style: TextStyle(color:mainColor, fontSize: 15),),
                           ),
                         )),
                     Positioned(
-                        top: 250,
-                        right: 250,
+                        top: 248,
+                        right: 235,
                         child: Container(
                           width: 80,
                           child: Center(
                             child: Text(
-                              ProviderMasjed.studentReports.last.endSora,
+                              ProviderMasjed.studentReports==null?"0":ProviderMasjed.studentReports.last.endSora,
                               style: TextStyle(color:mainColor, fontSize: 15),),
                           ),
                         )),
                     Positioned(
-                        top: 218,
-                        right: 250,
+                        top: 215,
+                        right: 235,
                         child: Container(
                           width: 80,
                           child: Center(
                             child: Text(
-                              ProviderMasjed.studentReports.first.beginSora,
+                              ProviderMasjed.studentReports==null?"0":ProviderMasjed.studentReports.first.beginSora,
                               style: TextStyle(color:mainColor, fontSize: 15),),
                           ),
                         )),

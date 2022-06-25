@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:masjed/appBar.dart';
 import 'package:masjed/MoshrefUi/drawer/drawer.dart';
 import 'package:masjed/generalBottomBar.dart';
+import 'package:masjed/launch.dart';
 import 'package:masjed/main.dart';
 import 'package:masjed/MoshrefUi/myData/dataPlace.dart';
 import 'package:masjed/nameData.dart';
@@ -120,6 +122,34 @@ class _StudentSuccessAddingState extends State<StudentSuccessAdding> {
                               DataPlace("عمل الاب", con1, data["fatherWork"], read, enable),
                               DataPlace("رقم هوية الاب", con1, data["fatherIdCard"], read, enable),
                               DataPlace("كلمة المرور", con1,  data["password"], read, enable),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    child: Column(
+                                      children: [
+                                        IconButton(
+                                          onPressed: (){UrlLauncher.urlLuncher.openWhatsApp(data["mobile"]);},
+                                          icon: Icon(Icons.phone),
+                                          iconSize: 40,
+                                          color: Colors.white,
+                                        ),
+                                        Text("واتساب",style: TextStyle(color: Colors.white,fontSize: 18),)
+                                      ],
+                                    ),
+                                    width:150,
+                                    height: 90,
+                                    decoration: BoxDecoration(
+                                      color:mainColor,
+                                      borderRadius: BorderRadius.all(Radius.circular(50))
+                                    ),
+                                  ),
+
+                                ],
+                              )
                             ],
                           );
 

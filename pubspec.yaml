@@ -28,6 +28,7 @@ dependencies:
   provider: ^5.0.0
   firebase_core: "^1.4.0"
   firebase_auth: ^3.0.1
+  shared_preferences: ^2.0.6
   syncfusion_flutter_xlsio: ^19.1.64-beta
   path_provider: ^2.0.1
   open_file: ^3.2.1

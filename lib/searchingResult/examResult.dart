@@ -138,7 +138,7 @@ class _ExamResultState extends State<ExamResult> {
                       studentName:ProviderMasjed.conExamStudent1.text==null? ProviderMasjed.selectedChainStudent.studentName:ProviderMasjed.conExamStudent1.text,
                     );
                     ProviderMasjed.getPressedExam(exam);
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>PngHome(ExamResult(ExamAdding(),DrawerApp()),DrawerApp())));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>PngHome(ProviderMasjed.pressedExam,ExamResult(ExamAdding(),DrawerApp()),DrawerApp())));
                   },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(mainColor),

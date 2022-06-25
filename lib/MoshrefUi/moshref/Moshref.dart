@@ -20,6 +20,7 @@ class Moshref extends StatefulWidget {
 class _MoshrefState extends State<Moshref> {
   void initState() {
     super.initState();
+
     Provider.of<ProviderMasjed>(context,listen: false).getChainFromFirestore();
     Provider.of<ProviderMasjed>(context,listen: false).getMohafethFromFirestore();
     Provider.of<ProviderMasjed>(context,listen: false).getStudentFromFirestore();
@@ -27,7 +28,9 @@ class _MoshrefState extends State<Moshref> {
     Provider.of<ProviderMasjed>(context,listen: false).getChainFromFirestore();
     Provider.of<ProviderMasjed>(context,listen: false).getmohafethComing();
     Provider.of<ProviderMasjed>(context,listen: false).getAllChats();
+    //Future.delayed(Duration(seconds: 1)).then((value) => Provider.of<ProviderMasjed>(context,listen: false).getLoginUser());
     print(Provider.of<ProviderMasjed>(context,listen: false).visible.toString()+'*/*/*/*');
+
 
   }
 

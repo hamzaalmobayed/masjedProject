@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:masjed/MohafethUi/showPressedStudent/showPressedStudent.dart';
 import 'package:masjed/MoshrefUi/dataProcessScreen/screen.dart';
 import 'package:masjed/MoshrefUi/drawer/drawer.dart';
 import 'package:masjed/MoshrefUi/history/historyShape.dart';
@@ -96,9 +97,10 @@ class _StudentMohafethDataShowState extends State<StudentMohafethDataShow> {
                   children: ProviderMasjed.studentChain.map((e){
                     num=coun+1;
                     return HistoryShape(num.toString(), e.studentName, e.mobile, Colors.black,Colors.white,(){
+                      ProviderMasjed.pressedStudentName=e.studentName;
                       Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                              builder: (con) => StudentSuccessAdding(StudentMohafethDataShow(widget.back,widget.drawer),widget.drawer)));
+                              builder: (con) => ShowPressedStudent(StudentMohafethDataShow(widget.back,widget.drawer),widget.drawer)));
                     },(){});
                   }).toList()
               )

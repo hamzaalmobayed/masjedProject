@@ -140,7 +140,7 @@ class _ExamSuccessAddingState extends State<ExamSuccessAdding> {
                 child: ElevatedButton(
                   onPressed: (){
 
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>PngHome(ExamSuccessAdding(ExamDataShow(),DrawerApp()),DrawerApp())));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>PngHome(ProviderMasjed.pressedExam,ExamSuccessAdding(ExamDataShow(),DrawerApp()),DrawerApp())));
                   },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(mainColor),

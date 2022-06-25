@@ -13,6 +13,7 @@ import 'package:masjed/main.dart';
 import 'package:masjed/model/ChatModel.dart';
 import 'package:masjed/model/ExamModel.dart';
 import 'package:masjed/model/MoshrefModel.dart';
+import 'package:masjed/sharedPreferences.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -39,6 +40,8 @@ class ProviderMasjed extends ChangeNotifier{
     getCourse();
 
   }
+  bool isComing=true;
+  String pressedStudentName;
   TextEditingController conName=TextEditingController();
   TextEditingController conBeginAya=TextEditingController();
   TextEditingController conBeginSora=TextEditingController();
@@ -158,6 +161,15 @@ class ProviderMasjed extends ChangeNotifier{
   TextEditingController conLoginPassword=TextEditingController();
   TextEditingController conMessage=TextEditingController();
   TextEditingController conStudentReport=TextEditingController();
+
+  TextEditingController moshrefNameCon=TextEditingController();
+  TextEditingController moshrefIdCardCon=TextEditingController();
+  TextEditingController moshrefbirthDateCon=TextEditingController();
+  TextEditingController moshreffeildCon=TextEditingController();
+  TextEditingController moshrefmobileCon=TextEditingController();
+  TextEditingController moshrefjobCon=TextEditingController();
+  TextEditingController moshreffamilyStatusCon=TextEditingController();
+  TextEditingController moshrefpasswordCon=TextEditingController();
   Mohafeth_model mohafeth;
   Student_model student;
   List<String> StatusList;
@@ -170,6 +182,7 @@ class ProviderMasjed extends ChangeNotifier{
   int count=0;
   String valueStudent;
   dynamic loginUser;
+  dynamic saveLogin;
   int i=0;
   int comingCount=0;
   int hefthCount=0;
@@ -226,6 +239,13 @@ class ProviderMasjed extends ChangeNotifier{
     String year = formatter.format(now);
     return year;
   }
+  getAgeOfStudent(Student_model s){
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy');
+    int yearNow = int.parse(formatter.format(now));
+    int yearStudent=int.parse(s.birthDate.split('/').last);
+    return yearNow-yearStudent;
+  }
   getMonth(){
     var now = new DateTime.now();
     var formatter = new DateFormat('MM');
@@ -235,6 +255,7 @@ class ProviderMasjed extends ChangeNotifier{
   List<Student_model> allStudents;
   List<Mohafeth_model> allMohafeths;
   List<Moshref_model> allMoshref;
+  String cardType;
   getPersons()async{
     List<Student_model> students =
     await FireStore_Helper.FireStoreHelper.getAllStudentFromFirestore();
@@ -262,6 +283,12 @@ class ProviderMasjed extends ChangeNotifier{
       print(conLoginCard.text.toString()+conLoginPassword.text.toString());
       if(conLoginCard.text==element.studentCard&&conLoginPassword.text==element.password){
         this.loginUser=element;
+        cardType="student";
+        Helper.x.saveStudentType(cardType);
+      }else if(conLoginCard.text==element.fatherIdCard&&conLoginPassword.text==element.mobile){
+        this.loginUser=element;
+        cardType="father";
+        Helper.x.saveStudentType(cardType);
       }
     });
 
@@ -271,6 +298,8 @@ class ProviderMasjed extends ChangeNotifier{
         this.loginUser=element;
       }
     });
+    Helper.x.saveUser("login", this.loginUser);
+    print("555555"+Helper.x.getType());
     persons.forEach((element) {
       print(element);
     });

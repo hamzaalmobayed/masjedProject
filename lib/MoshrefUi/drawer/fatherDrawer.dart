@@ -21,13 +21,14 @@ import 'package:masjed/StudentUi/studentData/studentData.dart';
 import 'package:masjed/StudentUi/studentExamData/studentExamData.dart';
 import 'package:masjed/StudentUi/studentScreenReport/srudentScreenReport.dart';
 import 'package:masjed/appBar.dart';
+import 'package:masjed/fatherUI/father.dart';
 import 'package:masjed/provider.dart';
 import 'package:masjed/sharedPreferences.dart';
 import 'package:provider/provider.dart';
 
 import 'drawerButton.dart';
 
-class StudentDrawer extends StatelessWidget {
+class FatherDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -42,16 +43,7 @@ class StudentDrawer extends StatelessWidget {
               ), () {
             Navigator.of(context).pop();
           }),
-          DrawerButton(
-              ImageIcon(
-                AssetImage("images/sheet.png"),
-                color: Colors.black,
-                size: 30,
-              ),
-              "بياناتي",
-                  () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentDataShowScreen(Student())));
-              }),
+
           DrawerButton(
               ImageIcon(
                 AssetImage("images/cup.png"),
@@ -60,16 +52,16 @@ class StudentDrawer extends StatelessWidget {
               ),
               "اصدار التقارير",
                   () {
-                    Provider.of<ProviderMasjed>(context,listen: false).getStudentbeginReportFromFirestore();
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentScreenReport(Student(),StudentDrawer())));
+                Provider.of<ProviderMasjed>(context,listen: false).getStudentbeginReportFromFirestore();
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentScreenReport(Father(),FatherDrawer())));
               }),
           DrawerButton(
               Icon(Icons.card_giftcard,
                 color: Colors.black,
                 size: 30,),
-              "ارشيف اختباراتي",
+              "ارشيف الاختبارات",
                   () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentExamData(Student(),StudentDrawer())));
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentExamData(Father(),FatherDrawer())));
               }),
           DrawerButton(
               Icon(Icons.image_search,
@@ -77,7 +69,7 @@ class StudentDrawer extends StatelessWidget {
                 size: 30,),
               "ارشيف الحفظ",
                   () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentDailyHefthScreen(Student(),StudentDrawer())));
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentDailyHefthScreen(Father(),FatherDrawer())));
               }),
           DrawerButton(
               Icon(
@@ -85,23 +77,23 @@ class StudentDrawer extends StatelessWidget {
                 color: Colors.black,
                 size: 30,
               ),
-              "حلقتي و المحفظون", () {
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentChain(Student(),StudentDrawer())));
+              "الحلقة و المحفظون", () {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>StudentChain(Father(),FatherDrawer())));
           }),
           Consumer<ProviderMasjed>(
               builder:(context,ProviderMasjed,x)=>  DrawerButton(
-              Icon(
-                Icons.logout_outlined,
-                color: Colors.black,
-                size: 30,
-              ),
-              "تسجيل خروج", () {
-            ProviderMasjed.loginUser=null;
-            Helper.x.Signout("login");
-            ProviderMasjed.conLoginCard.clear();
-            ProviderMasjed.conLoginPassword.clear();
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>Login()));
-          })),
+                  Icon(
+                    Icons.logout_outlined,
+                    color: Colors.black,
+                    size: 30,
+                  ),
+                  "تسجيل خروج", () {
+                ProviderMasjed.loginUser=null;
+                Helper.x.Signout("login");
+                ProviderMasjed.conLoginCard.clear();
+                ProviderMasjed.conLoginPassword.clear();
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (con)=>Login()));
+              })),
         ],
       ),
     );

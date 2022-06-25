@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:masjed/appBar.dart';
 import 'package:masjed/MoshrefUi/drawer/drawer.dart';
 import 'package:masjed/generalBottomBar.dart';
+import 'package:masjed/launch.dart';
 import 'package:masjed/main.dart';
 import 'package:masjed/MoshrefUi/mohafethAdding/mohafethAdding.dart';
 import 'package:masjed/MoshrefUi/moshref/Moshref.dart';
@@ -118,6 +119,33 @@ class _MohafethSuccessAddingState extends State<MohafethSuccessAdding> {
                           DataPlace("حالة الاسرة", con1, data["familyStatus"], read, enable),
                           DataPlace("كلمة المرور", con1, data["password"], read, enable),
                           DataPlace("اخر دورة احكام", con1, data["course"], read, enable),
+                          SizedBox(height: 20,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                child: Column(
+                                  children: [
+                                    IconButton(
+                                      onPressed: (){UrlLauncher.urlLuncher.openWhatsApp(data["mobile"]);},
+                                      icon: Icon(Icons.phone),
+                                      iconSize: 40,
+                                      color: Colors.white,
+                                    ),
+                                    Text("واتساب",style: TextStyle(color: Colors.white,fontSize: 18),)
+                                  ],
+                                ),
+                                width:150,
+                                height: 90,
+                                decoration: BoxDecoration(
+                                    color:mainColor,
+                                    borderRadius: BorderRadius.all(Radius.circular(50))
+                                ),
+                              ),
+
+                            ],
+                          ),
+                          SizedBox(height: 20,),
                         ],
                       );
                     }else{
